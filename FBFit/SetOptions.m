@@ -22,7 +22,7 @@ Options[FBSetOptions]={
 	"SeedSignFlip"->False,
 	"SeedSmear"->False,
 	"SigmaGetNew"->0.01,
-	"Thinning"->1
+	"ThinningSaveFile"->1
 };
 
 
@@ -45,11 +45,11 @@ FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ss
 		"SeedSignFlip",
 		"SeedSmear",
 		"SigmaGetNew",
-		"Thinning"
+		"ThinningSaveFile"
 		};
 	SetOptions[FBFit`FBSetSeed,{"SeedSignFlip"->ssf,"SeedSmear"->ss}];
 	SetOptions[FBFit`FBMonteCarlo,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb,"BurnIn"->bu,
-			"VaryAcceptance"->va,"ExcludeParameters"->ep,"SigmaGetNew"->sigma,"SaveOutput"->save,"Thinning"->th}];
+			"VaryAcceptance"->va,"ExcludeParameters"->ep,"SigmaGetNew"->sigma,"SaveOutput"->save,"ThinningSaveFile"->th}];
 	SetOptions[FBFit`BestFitsAndErrors`FBLoadBestFitsAndErrors,{"Model"->m,"MSUSY"->ms,"ScaleMu"->scmu}];
 	SetOptions[FBFit`BestFitsAndErrors`FBGetDataBestFit,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb}];
 	SetOptions[FBFit`BestFitsAndErrors`FBGetDataErrors,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb}];

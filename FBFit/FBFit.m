@@ -12,7 +12,7 @@ Begin["`Private`"];
 
 Options[FBSetSeed]={"SeedSignFlip"->False,"SeedSmear"->False};
 Options[FBMonteCarlo]={"Model"->"MSSM","ScaleMu"->1*^12,"TanB"->5.,"EtaB"->0.,"ExcludeParameters"->{},
-	"VaryAcceptance"->True,"BurnIn"->0,"SigmaGetNew"->0.01,"SaveOutput"->True,"Thinning"->1};
+	"VaryAcceptance"->True,"BurnIn"->0,"SigmaGetNew"->0.01,"SaveOutput"->True,"ThinningSaveFile"->1};
 
 (* ::Global variables:: *)
 
@@ -76,8 +76,8 @@ FBMonteCarlo[nMCMC0_,theta0_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta0,si
 	
 	time=DateDifference[time, Now, {"Hour", "Minute"}];
 	If[OptionValue["SaveOutput"],
-		Export["rundata.txt",rdata[[;;;;OptionValue["Thinning"]]],"Table"];
-		Export["acceptance.log",ralpha[[;;;;OptionValue["Thinning"]]],"List"];
+		Export["rundata.txt",rdata[[;;;;OptionValue["ThinningSaveFile"]]],"Table"];
+		Export["acceptance.log",ralpha[[;;;;OptionValue["ThinningSaveFile"]]],"List"];
 		Export["time.log",ToString@time,"Text"]
 	];
 	Return[r]
