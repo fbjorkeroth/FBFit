@@ -16,19 +16,19 @@ Options[FBMonteCarlo]={"Model"->"MSSM","ScaleMu"->1*^12,"TanB"->5.,"EtaB"->0.,"E
 
 (* ::Global variables:: *)
 
-Yu=Global`Yu;
-Yd=Global`Yd;
-mnu=Global`mnu;
-Ye=Global`Ye;
+Yu = Global`Yu;
+Yd = Global`Yd;
+mnu = Global`Mnu;
+Ye = Global`Ye;
 
-inputVariables = Global`inputVariables;
-inLabels = Global`inLabels;
-startBounds = Global`startBounds;
+inputVariables = Global`InputVariables;
+(*inLabels = Global`InLabels;*)
+startBounds = Global`StartBounds;
 
-isReal = Global`isReal;
-isPhase = Global`isPhase;
-isQuark = Global`isQuark;
-isLepton = Global`isLepton;
+isReal = Global`IsReal;
+isPhase = Global`IsPhase;
+isQuark = Global`IsQuark;
+isLepton = Global`IsLepton;
 
 (* ::Public functions:: *)
 

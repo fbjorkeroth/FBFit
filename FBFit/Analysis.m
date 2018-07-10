@@ -15,8 +15,6 @@ FBCredibleInterval::usage="Calculates the N% credible interval for physical (Yuk
 FBPlotHistogram::usage="Plots histogram of physical output data.";
 
 FBChopDataFraction::usage="Chops off the first Nth fraction of rows in a data set, where 0<N<1.";
-FBAverageRejection::usage="Calculates the average acceptance rate by counting successive elements of output table with the same \[Chi]2. Essentially defunct now.";
-
 
 Begin["Private`"];
 
@@ -34,17 +32,18 @@ Options[FBPlotHistogram]={"Thinning"->1,"ImageSize"->300,"Bins"->30};
 
 Yu = Global`Yu;
 Yd = Global`Yd;
-mnu = Global`mnu;
+mnu = Global`Mnu;
 Ye = Global`Ye;
 
-inputVariables = Global`inputVariables;
-inLabels = Global`inLabels;
-startBounds = Global`startBounds;
+inputVariables = Global`InputVariables;
+(*inLabels = Global`InLabels;*)
+inLabels = ToString/@(Global`InLabels);
+startBounds = Global`StartBounds;
 
-isReal = Global`isReal;
-isPhase = Global`isPhase;
-isQuark = Global`isQuark;
-isLepton = Global`isLepton;
+isReal = Global`IsReal;
+isPhase = Global`IsPhase;
+isQuark = Global`IsQuark;
+isLepton = Global`IsLepton;
 
 (* ::Public functions:: *)
 
@@ -140,11 +139,6 @@ FBChopDataFraction[inputdata_,bottomfraction_]:=Module[{data=inputdata,b=bottomf
 	Take[data,-n]
 ];
 
-
-FBAverageRejection[table_,n_]:=Module[{l},
-	l=Exp[-table[[;;,Length@table[[1]]]]/2];
-	Count[Round@Ratios[l],1]/n//N
-];
 
 (* ::Internal functions:: *)
 

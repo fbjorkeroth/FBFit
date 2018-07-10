@@ -13,10 +13,7 @@ nMCMC=1000;
 
 FBSetOptions[
 	"Model"->"SM",
-	"BurnIn"->0,
-	"SaveOutput"->True,
-	"ExcludeParameters"->Range[11,19],
-	"ThinningSaveFile"->Ceiling[nMCMC/50000]
+	"SaveOutput"->False
 ];
 
 FBLoadBestFitsAndErrors[];
@@ -24,6 +21,7 @@ FBLoadBestFitsAndErrors[];
 \[Theta]0=FBSetSeed[];
 
 l=FBMonteCarlo[nMCMC,\[Theta]0];
+
 Print["Done!"];
 
 
