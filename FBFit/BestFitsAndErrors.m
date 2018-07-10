@@ -116,9 +116,19 @@ loadBestFitsAndErrorsMSSM[MSUSY_:1]:=Module[{data(*,vHiggs=174*)},
 	errdeltal=55;
 ];
 
-importDataFile[yuk_,MSUSY_]:=Module[{dDir},
-	dDir=NotebookDirectory[]<>"RunningParameters/data/MSUSY="<>ToString[MSUSY]<>"TeV/";
-	Import[dDir<>yuk<>".dat","Table"]
+thisPath=DirectoryName[$InputFileName];
+importDataFile[yuk_,MSUSY_]:=Module[{dDir,endName,fileName},
+	endName="MSUSY="<>ToString[MSUSY]<>"TeV/";
+	fileName=yuk<>".dat";
+	dDir=FileNameJoin@{
+		thisPath,
+		"MixingParameterTools",
+		"RunningParameters",
+		"data",
+		endName,
+		fileName
+	};
+	Import[dDir,"Table"]
 ];
 
 

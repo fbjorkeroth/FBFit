@@ -12,7 +12,7 @@ FBLoadModel["models/model.m"];
 nMCMC=1000;
 
 FBSetOptions[
-	"Model"->"SM",
+	"Model"->"MSSM",
 	"SaveOutput"->False
 ];
 
