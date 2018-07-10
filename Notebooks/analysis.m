@@ -8,15 +8,12 @@
 (*Load packages and data*)
 
 
-AppendTo[$Path,NotebookDirectory[]];
-Needs["MixingParameterTools`MPT3x3`"];
-Get["FBCalculateParameters`"];
+AppendTo[$Path,ParentDirectory[NotebookDirectory[]]];
 Get["FBFit`"];
-Get["FBAnalysis`"];
 
 FBLoadModel["models/model.m"];
 
-runName="long1";
+runName="test";
 (*SetDirectory[FileNameJoin@{NotebookDirectory[],"data",runName}];*)
 FBImportFrom[runName];
 
@@ -25,7 +22,6 @@ acceptanceList=Import["acceptance.log","List"];
 options=Import["variables.mx"];
 
 FBSetOptions@@options;
-FBSetOptionsAnalysis@@options;
 FBLoadBestFitsAndErrors[];
 
 

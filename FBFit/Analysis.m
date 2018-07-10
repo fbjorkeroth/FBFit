@@ -10,8 +10,6 @@ FBPrintInput::usage="prints the best fit \!\(\*SuperscriptBox[\(\[Chi]\), \(2\)]
 FBPrintOutput::usage="prints the best fit physical parameters.";
 FBPlotPulls::usage="plots a bar chart of the pulls of each output parameter.";
 
-FBSetOptionsAnalysis::usage="Sets all analysis function options to values defined by the user.";
-
 FBPhysicalParameters::usage="Outputs the physical parameters (Yukawa eigenvalues, mixing parameters) for a given set of input data. Option exists to thin this data for quicker evaluation.";
 FBCredibleInterval::usage="Calculates the N% credible interval for physical (Yukawa, mixing) parameters for a given input data set.";
 FBPlotHistogram::usage="Plots histogram of physical output data.";
@@ -27,24 +25,6 @@ Begin["Private`"];
 Options[FBPrintInput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"ExcludeParameters"->{}};
 Options[FBPrintOutput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.};
 Options[FBPlotPulls]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"ExcludeParameters"->{}};
-
-Options[FBSetOptionsAnalysis]={
-	"SaveOutput"->True,
-	"Analysis"->False,
-	"Model"->"MSSM",
-	"MSUSY"->1,
-	"ScaleMu"->1*^12,
-	"TanB"->5.,
-	"EtaB"->0.,
-	"BurnIn"->0,
-	"VaryAcceptance"->True,
-	"ExcludeParameters"->{},
-	"SeedSignFlip"->False,
-	"SeedSmear"->False,
-	"Export"->True,
-	"SigmaGetNew"->0.01,
-	"Thinning"->1
-};
 
 Options[FBPhysicalParameters]={"Thinning"->1};
 Options[FBCredibleInterval]={"Thinning"->1,"SigmaSpan"->3,"PixelDensity"->100,"Plot"->True};
@@ -71,7 +51,7 @@ isLepton = Global`isLepton;
 FBImportFrom[runName_]:=Module[{rn=runName,dir},
 	dir=FileNameJoin@{NotebookDirectory[],"data",rn};
 	If[DirectoryQ[dir]==False,
-		Print["FBImportFrom: data directory not found! Please select another run. Quitting kernel for safety.."];
+		Print["FBImportFrom: data directory ",dir," not found! Please select another run. Quitting kernel for safety.."];
 		Quit[]
 	];
 	SetDirectory[dir];
@@ -114,31 +94,6 @@ FBPlotPulls[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,dataerrors,cal
 	Print@BarChart[pulls,ChartLabels->outLabels,AxesLabel->"Pull",ImageSize->Large,AspectRatio->1/2,BaseStyle->FontSize->12]
 ];
 
-
-FBSetOptionsAnalysis[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma},
-	{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma}=OptionValue[#]&/@{
-		"SaveOutput",
-		"Analysis",
-		"Model",
-		"MSUSY",
-		"ScaleMu",
-		"TanB",
-		"EtaB",
-		"BurnIn",
-		"VaryAcceptance",
-		"ExcludeParameters",
-		"SeedSignFlip",
-		"SeedSmear",
-		"SigmaGetNew"
-		};
-	SetOptions[FBPrintInput,{"Model"->m,"TanB"->tb,"EtaB"->eb,"ExcludeParameters"->ep}];
-	SetOptions[FBPrintOutput,{"Model"->m,"TanB"->tb,"EtaB"->eb}];
-	SetOptions[FBPlotPulls,{"Model"->m,"TanB"->tb,"EtaB"->eb,"ExcludeParameters"->ep}];
-	Print["FBSetOptionsAnalysis: options imported into analysis functions."];
-	SetOptions[FBSetOptionsAnalysis,opts];
-	{opts}
-];
-
 FBPhysicalParameters[inputdata_,variable_,OptionsPattern[]]:=Module[{data=inputdata,dataThinned,n=variable},
 	dataThinned=Take[data,{1,Length[data],OptionValue["Thinning"]}];
 	(FBCalculateParameters[Yu,Yd,mnu,Ye]/.Thread[inputVariables->dataThinned[[#,;;-2]]])[[n]]&/@Range[Length[dataThinned]]
@@ -166,7 +121,6 @@ FBCredibleInterval[inputdata_,variable_,CIlevel_,OptionsPattern[]]:=Module[{data
 	Print[StringJoin["n = ",ToString[n],"; ",ToString[100level//Round],"% CI: ",ToString[ci]]];
 	Return[]
 ];
-
 
 FBPlotHistogram[inputdata_,variable_,OptionsPattern[]]:=Module[{data=inputdata,n=variable,bf,err,p,bins,h,maxH,line},
 	bf=FBGetDataBestFit[][[n]];
