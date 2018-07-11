@@ -22,8 +22,7 @@ Options[FBSetOptions]={
 	"SeedSignFlip"->False,
 	"SeedSmear"->False,
 	"SigmaGetNew"->0.01,
-	"ThinningSaveFile"->1,
-	"Thinning"->1
+	"ThinningSaveFile"->1
 };
 
 (* ::Public functions:: *)

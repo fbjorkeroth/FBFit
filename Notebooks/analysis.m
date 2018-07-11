@@ -1,21 +1,14 @@
-(* ::Package:: *)
-
 (* ::Title:: *)
 (*MCMC analysis*)
-
 
 (* ::Section:: *)
 (*Load packages and data*)
 
-
-AppendTo[$Path,ParentDirectory[NotebookDirectory[]]];
 Get["FBFit`"];
 
 FBLoadModel["models/model.m"];
 
-runName="test";
-(*SetDirectory[FileNameJoin@{NotebookDirectory[],"data",runName}];*)
-FBImportFrom[runName];
+FBImportFrom["test"];
 
 likelihoodTable=Import["rundata.txt","Table"];
 acceptanceList=Import["acceptance.log","List"];
@@ -24,10 +17,8 @@ options=Import["variables.mx"];
 FBSetOptions@@options;
 FBLoadBestFitsAndErrors[];
 
-
 (* ::Section:: *)
 (*Plot best fit point*)
-
 
 thetaBest=FBExtractBestInput[likelihoodTable];
 
@@ -35,17 +26,13 @@ FBPrintInput[thetaBest];
 FBPrintOutput[thetaBest];
 FBPlotPulls[thetaBest];
 
-
 (* ::Section:: *)
 (*Analytics*)
-
 
 (* ::Subsection:: *)
 (*Evolution of \[Alpha] (acceptance)*)
 
-
 chisqList=likelihoodTable[[;;,-1]];
-
 
 Histogram[chisqList]
 chisqHist=Block[{ch,div=100,index,me},
@@ -54,8 +41,6 @@ chisqHist=Block[{ch,div=100,index,me},
 	Transpose[Mean/@Partition[#,div]&/@{index,ch}]
 ];
 ListPlot[chisqHist,Joined->True]
-
-
 
 ListPlot[MovingAverage[acceptanceList,100]]
 

@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     18064,        489]
-NotebookOptionsPosition[     10761,        333]
-NotebookOutlinePosition[     11451,        358]
-CellTagsIndexPosition[     11372,        353]
+NotebookDataLength[     18100,        489]
+NotebookOptionsPosition[     10779,        333]
+NotebookOutlinePosition[     11469,        358]
+CellTagsIndexPosition[     11390,        353]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -258,7 +258,7 @@ Cell[BoxData[
 Cell["\<\
 Number of bins. Larger bins gives higher statistics at the cost of precision.\
 \
-\>", "Notes",
+\>", "ExampleText",
  CellChangeTimes->{{3.740225046948504*^9, 3.74022508681879*^9}},
  CellID->1501806744,ExpressionUUID->"549146d4-0079-4cba-be74-ed022b2853b9"]
 }, Open  ]],
@@ -272,7 +272,7 @@ Cell[BoxData[
   $Line = 0; Null]], "ExampleSubsection",
  CellID->1081380915,ExpressionUUID->"8beabb9f-cadd-464a-b9ea-5c7962468ea5"],
 
-Cell["Size of the produced histogram.", "Notes",
+Cell["Size of the produced histogram.", "ExampleText",
  CellChangeTimes->{{3.740225089227149*^9, 3.740225097506589*^9}},
  CellID->1932320849,ExpressionUUID->"628243eb-230b-4793-88f9-f3f0d014ecd9"]
 }, Open  ]],
@@ -289,7 +289,7 @@ Cell[BoxData[
 Cell["\<\
 Thin the data by taking 1/N elements of the list; this speeds up the \
 calculation considerably, at the expense of a loss of precision.\
-\>", "Notes",
+\>", "ExampleText",
  CellChangeTimes->{{3.740224740669553*^9, 3.74022478930371*^9}},
  CellID->867696200,ExpressionUUID->"9d9f2d87-fa98-411e-a22e-3bdcad8566a5"]
 }, Open  ]]
@@ -352,7 +352,7 @@ CellTagsIndex->{
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"ExtendedExamples", 11179, 346}
+ {"ExtendedExamples", 11197, 346}
  }
 *)
 (*NotebookFileOutline
@@ -464,31 +464,31 @@ Cell[7593, 241, 244, 5, 21, "ExampleSection",ExpressionUUID->"6a484840-68bb-4275
 Cell[CellGroupData[{
 Cell[7862, 250, 251, 5, 24, "ExampleSubsection",ExpressionUUID->"3648e6d8-7090-47da-8baf-7767d9ef0cc5",
  CellID->1514431937],
-Cell[8116, 257, 245, 5, 25, "Notes",ExpressionUUID->"549146d4-0079-4cba-be74-ed022b2853b9",
+Cell[8116, 257, 251, 5, 22, "ExampleText",ExpressionUUID->"549146d4-0079-4cba-be74-ed022b2853b9",
  CellID->1501806744]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[8398, 267, 256, 5, 24, "ExampleSubsection",ExpressionUUID->"8beabb9f-cadd-464a-b9ea-5c7962468ea5",
+Cell[8404, 267, 256, 5, 24, "ExampleSubsection",ExpressionUUID->"8beabb9f-cadd-464a-b9ea-5c7962468ea5",
  CellID->1081380915],
-Cell[8657, 274, 190, 2, 25, "Notes",ExpressionUUID->"628243eb-230b-4793-88f9-f3f0d014ecd9",
+Cell[8663, 274, 196, 2, 22, "ExampleText",ExpressionUUID->"628243eb-230b-4793-88f9-f3f0d014ecd9",
  CellID->1932320849]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[8884, 281, 254, 5, 24, "ExampleSubsection",ExpressionUUID->"0e9b6cc6-f471-4148-aa3c-0eb536c2e293",
+Cell[8896, 281, 254, 5, 24, "ExampleSubsection",ExpressionUUID->"0e9b6cc6-f471-4148-aa3c-0eb536c2e293",
  CellID->915645076],
-Cell[9141, 288, 300, 5, 41, "Notes",ExpressionUUID->"9d9f2d87-fa98-411e-a22e-3bdcad8566a5",
+Cell[9153, 288, 306, 5, 37, "ExampleText",ExpressionUUID->"9d9f2d87-fa98-411e-a22e-3bdcad8566a5",
  CellID->867696200]
 }, Open  ]]
 }, Open  ]],
-Cell[9468, 297, 248, 5, 33, "ExampleSection",ExpressionUUID->"de7b63a8-ce44-4e43-be62-c1faf53691b9",
+Cell[9486, 297, 248, 5, 33, "ExampleSection",ExpressionUUID->"de7b63a8-ce44-4e43-be62-c1faf53691b9",
  CellID->258228157],
-Cell[9719, 304, 259, 5, 21, "ExampleSection",ExpressionUUID->"31d70b92-e26a-4666-b2ed-6763712e2cf3",
+Cell[9737, 304, 259, 5, 21, "ExampleSection",ExpressionUUID->"31d70b92-e26a-4666-b2ed-6763712e2cf3",
  CellID->2123667759],
-Cell[9981, 311, 252, 5, 21, "ExampleSection",ExpressionUUID->"96146ec5-4685-4ea1-8983-1a9c92d14275",
+Cell[9999, 311, 252, 5, 21, "ExampleSection",ExpressionUUID->"96146ec5-4685-4ea1-8983-1a9c92d14275",
  CellID->1305812373],
-Cell[10236, 318, 257, 5, 21, "ExampleSection",ExpressionUUID->"d248e3ef-24a0-4c51-9a01-4685600b6095",
+Cell[10254, 318, 257, 5, 21, "ExampleSection",ExpressionUUID->"d248e3ef-24a0-4c51-9a01-4685600b6095",
  CellID->1653164318],
-Cell[10496, 325, 249, 5, 21, "ExampleSection",ExpressionUUID->"04b12be7-ae0c-426a-a618-72282f51dd7f",
+Cell[10514, 325, 249, 5, 21, "ExampleSection",ExpressionUUID->"04b12be7-ae0c-426a-a618-72282f51dd7f",
  CellID->589267740]
 }, Open  ]]
 }
