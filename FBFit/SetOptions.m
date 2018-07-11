@@ -13,7 +13,7 @@ Options[FBSetOptions]={
 	"Analysis"->False,
 	"Model"->"MSSM",
 	"MSUSY"->1,
-	"ScaleMu"->1*^12,
+	"ScaleMu"->100,
 	"TanB"->5.,
 	"EtaB"->0.,
 	"BurnIn"->0,
@@ -59,7 +59,7 @@ FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ss
 	SetOptions[FBFit`Analysis`FBPlotPulls,{"Model"->m,"TanB"->tb,"EtaB"->eb,"ExcludeParameters"->ep}];
 
 	SetOptions[FBSetOptions,opts];
-	Print["FBSetOptions: model specs set: ",ToString[{opts}]];
+	Print["FBSetOptions: fit specs set: ",ToString[{opts}]];
 	Which[
 		an==True,
 			Print["FBSetOptions: options set for analysis."],

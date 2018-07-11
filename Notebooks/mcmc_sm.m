@@ -12,7 +12,7 @@ FBLoadModel["models/model.m"];
 nMCMC=1000;
 
 FBSetOptions[
-	"Model"->"MSSM",
+	"Model"->"SM",
 	"SaveOutput"->False
 ];
 
@@ -21,8 +21,3 @@ FBLoadBestFitsAndErrors[];
 \[Theta]0=FBSetSeed[];
 
 l=FBMonteCarlo[nMCMC,\[Theta]0];
-
-Print["Done!"];
-
-
-

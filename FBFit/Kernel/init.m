@@ -7,4 +7,8 @@ Get[ "FBFit`SetOptions`"]
 Get[ "FBFit`Analysis`"]
 Get[ "FBFit`FBFit`"]
 
-Print["Package FBFit` loaded."];
+Print["Package FBFit` loaded.\nFor an overview of the package functions, see the ",
+	Hyperlink["documentation","paclet:FBFit",BaseStyle->Bold],
+	".\nSeveral variables must be defined manually, see the ",
+	Hyperlink["tutorial","paclet:FBFit/tutorial/A simple MCMC fit",BaseStyle->Bold]," for details."
+];

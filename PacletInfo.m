@@ -8,7 +8,7 @@ Paclet[
     MathematicaVersion -> "7+",
     Extensions -> 
         {
-            {"Documentation", Language -> "English", MainPage -> "Tutorials/A simple MCMC fit"}
+            {"Documentation", Language -> "English", MainPage -> "Tutorials/FBFitOverview"}
         }
 ]
 

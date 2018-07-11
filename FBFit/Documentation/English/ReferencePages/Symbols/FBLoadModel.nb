@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     18558,        501]
-NotebookOptionsPosition[     11582,        353]
-NotebookOutlinePosition[     12356,        380]
-CellTagsIndexPosition[     12277,        375]
+NotebookDataLength[     18156,        488]
+NotebookOptionsPosition[     11328,        344]
+NotebookOutlinePosition[     12102,        371]
+CellTagsIndexPosition[     12023,        366]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -334,21 +334,12 @@ Cell[BoxData[
   $Line = 0; Null]], "ExampleSection",
  CellID->1653164318,ExpressionUUID->"ba008f06-32b4-4637-82d5-d1867db0af38"],
 
-Cell[CellGroupData[{
-
 Cell[BoxData[
  InterpretationBox[Cell[
   "Neat Examples", "ExampleSection",ExpressionUUID->
    "bd895d52-a152-48ac-ae43-3fe75dfb49c8"],
   $Line = 0; Null]], "ExampleSection",
- CellID->589267740,ExpressionUUID->"8c826a0b-2d7b-460a-86c0-0c6af39b55cb"],
-
-Cell[BoxData[
- RowBox[{"Quit", "[", "]"}]], "Input",
- CellChangeTimes->{{3.740229086724763*^9, 3.740229111198221*^9}},
- CellLabel->"In[9]:=",
- CellID->1194712517,ExpressionUUID->"bd221eb8-18b1-4976-bf94-4c45007efee9"]
-}, Open  ]]
+ CellID->589267740,ExpressionUUID->"8c826a0b-2d7b-460a-86c0-0c6af39b55cb"]
 }, Open  ]]
 },
 WindowSize->{700, 770},
@@ -374,7 +365,7 @@ CellTagsIndex->{
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"ExtendedExamples", 12084, 368}
+ {"ExtendedExamples", 11830, 359}
  }
 *)
 (*NotebookFileOutline
@@ -496,12 +487,8 @@ Cell[10548, 322, 252, 5, 21, "ExampleSection",ExpressionUUID->"ca307c36-af18-444
  CellID->1305812373],
 Cell[10803, 329, 257, 5, 21, "ExampleSection",ExpressionUUID->"ba008f06-32b4-4637-82d5-d1867db0af38",
  CellID->1653164318],
-Cell[CellGroupData[{
-Cell[11085, 338, 249, 5, 21, "ExampleSection",ExpressionUUID->"8c826a0b-2d7b-460a-86c0-0c6af39b55cb",
- CellID->589267740],
-Cell[11337, 345, 217, 4, 27, "Input",ExpressionUUID->"bd221eb8-18b1-4976-bf94-4c45007efee9",
- CellID->1194712517]
-}, Open  ]]
+Cell[11063, 336, 249, 5, 21, "ExampleSection",ExpressionUUID->"8c826a0b-2d7b-460a-86c0-0c6af39b55cb",
+ CellID->589267740]
 }, Open  ]]
 }
 ]

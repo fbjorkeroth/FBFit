@@ -10,15 +10,15 @@ Begin["`Private`"];
 
 (* ::Function options:: *)
 
-Options[FBLoadBestFitsAndErrors]={"Model"->"MSSM","MSUSY"->1,"ScaleMu"->1*^12};
-Options[FBGetDataBestFit]={"Model"->"MSSM","ScaleMu"->1*^12,"TanB"->5.,"EtaB"->0.};
+Options[FBLoadBestFitsAndErrors]={"Model"->"MSSM","MSUSY"->1,"ScaleMu"->100};
+Options[FBGetDataBestFit]={"Model"->"MSSM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.};
 Options[FBGetDataErrors]=Options[FBGetDataBestFit];
 
 (* ::Public functions:: *)
 
 FBLoadBestFitsAndErrors[opts:OptionsPattern[]]:=Module[{model},
 	model=OptionValue["Model"];
-	Print["FBLoadBestFitsAndErrors: Extracting Yukawa couplings and mixing parameters..."];
+	Print["FBLoadBestFitsAndErrors: extracting Yukawa couplings and mixing parameters..."];
 	Switch[model,
 	"MSSM",loadBestFitsAndErrorsMSSM[OptionValue["MSUSY"]],
 	"SM",loadBestFitsAndErrorsSM[OptionValue["ScaleMu"]],
@@ -54,7 +54,7 @@ loadBestFitsAndErrorsSM[mu_]:=Module[{vHiggs=174},
 	{yd,ys,yb}={1.34*^-3,26.*^-3,1.21}/vHiggs;
 		
 	{theta12l,theta13l,theta23l,deltal}={33.57,8.46,41.75,257};
-	{dm21,dm31}={7.51*^-5,2.524*^-3} (* Neutrino Subsuperscript[\[CapitalDelta]m, ij, 2], in eV^2 *);
+	{dm21,dm31}={7.51*^-5,2.524*^-3};
 	{ye,ymu,ytau}={4.90856087*^-4,0.103622931,1.76167}/vHiggs;
 
 	{errtheta12q,errtheta13q,errtheta23q,errdeltaq}={0.041,0.036 theta13q,0.016 theta23q,3.095};
@@ -105,9 +105,9 @@ loadBestFitsAndErrorsMSSM[MSUSY_:1]:=Module[{data(*,vHiggs=174*)},
 	erryb=Function[{tanBeta,etaB},sigmayb[tanBeta,etaB]yb[tanBeta,etaB]];
 	errytau=Function[{tanBeta,etaB},sigmaytau[tanBeta,etaB]ytau[tanBeta,etaB]];
 	
-	{theta12q,deltaq}={13.026,69.215};(* Cabibbo angle and CP phase *)
+	{theta12q,deltaq}={13.026,69.215};
 	{theta12l,theta13l,theta23l}={33.57,8.46,41.75};
-	{dm21,dm31}={7.51*^-5,2.524*^-3} (* Neutrino Subsuperscript[\[CapitalDelta]m, ij, 2], in eV^2 *);
+	{dm21,dm31}={7.51*^-5,2.524*^-3};
 	deltal=257;
 
 	{errtheta12q,errdeltaq}={0.041,3.095};

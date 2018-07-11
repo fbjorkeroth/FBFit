@@ -34,7 +34,8 @@ isLepton = Global`IsLepton;
 
 FBLoadModel[filename_]:=Module[{f=filename},
 	Get[FileNameJoin@{NotebookDirectory[],f}];
-	Print["FBLoadModel: model loaded from ",f]
+	Print["FBLoadModel: model loaded from ",f];
+	Return[0]
 ];
 
 
@@ -45,8 +46,10 @@ FBSetSeed[OptionsPattern[]]:=Module[{theta},
 	theta
 ];
 
-FBMonteCarlo[nMCMC0_,theta0_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta0,sigma,dbf,derr,time,l,r,tnew,lnew,alpha,meanAlpha=1.,rdata,ralpha},
+FBMonteCarlo[nMCMC0_,theta0_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta0,sigma,dbf,derr,time,l,r,tnew,lnew,alpha,meanAlpha=1.,rdata,ralpha,prog=0},
 	
+	Print["FBMonteCarlo: running fit..."];
+	Print[ProgressIndicator[Dynamic[prog/nMCMC]]];
 	sigma=OptionValue["SigmaGetNew"];
 	
 	dbf=FBGetDataBestFit[];
@@ -67,7 +70,8 @@ FBMonteCarlo[nMCMC0_,theta0_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta0,si
 		If[n>OptionValue["BurnIn"],
 			Sow[Flatten[{t,-2Log[l]}],"Data"];
 			Sow[alpha,"Alpha"]
-		](* Adds the link to the output chain *)
+		]; (* Adds the link to the output chain *)
+		prog++
 	,{n,nMCMC}
 	],{"Data","Alpha"}];
 
@@ -80,7 +84,8 @@ FBMonteCarlo[nMCMC0_,theta0_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta0,si
 		Export["acceptance.log",ralpha[[;;;;OptionValue["ThinningSaveFile"]]],"List"];
 		Export["time.log",ToString@time,"Text"]
 	];
-	Return[r]
+	Print["FBMonteCarlo: fit complete!"];
+	Return[r[[2]]]
 ];
 
 (* ::Internal functions:: *)
