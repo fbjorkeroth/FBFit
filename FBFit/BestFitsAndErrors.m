@@ -49,20 +49,21 @@ FBGetDataErrors[OptionsPattern[]]:=Module[{model},
 printBadModel[]:=Module[{},Print["Model not supported. Quitting kernel for safety.."];Quit[]];
 
 loadBestFitsAndErrorsSM[mu_]:=Module[{vHiggs=174},
+	(* Lepton data from NuFit 3.2 *)
 	{theta12q,theta13q,theta23q,deltaq}={13.026,3.8*^-3,4.4*^-2,69.215};(* Cabibbo angle and CP phase *)
 	{yu,yc,yt}={0.58*^-3,0.281,86.7}/vHiggs;
 	{yd,ys,yb}={1.34*^-3,26.*^-3,1.21}/vHiggs;
 		
-	{theta12l,theta13l,theta23l,deltal}={33.57,8.46,41.75,257};
-	{dm21,dm31}={7.51*^-5,2.524*^-3};
+	{theta12l,theta13l,theta23l,deltal}={33.62,8.54,47.2,234};
+	{dm21,dm31}={7.40*^-5,2.494*^-3};
 	{ye,ymu,ytau}={4.90856087*^-4,0.103622931,1.76167}/vHiggs;
 
 	{errtheta12q,errtheta13q,errtheta23q,errdeltaq}={0.041,0.036 theta13q,0.016 theta23q,3.095};
 	{erryu,erryc,erryt}={0.24*^-3,0.042,4.0}/vHiggs;
 	{erryd,errys,erryb}={6.0*^-4,8*^-3,0.05}/vHiggs;
 		
-	{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.76,0.15,1.35,55};
-	{errdm21,errdm31}={0.18*^-5,0.040*^-3};
+	{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.15,3.9,43};
+	{errdm21,errdm31}={0.21*^-5,0.033*^-3};
 	{errye,errymu,errytau}=0.006{ye,ymu,ytau};
 ];
 
