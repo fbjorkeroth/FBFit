@@ -32,9 +32,13 @@ isLepton = Global`IsLepton;
 
 (* ::Public functions:: *)
 
-FBLoadModel[filename_]:=Module[{f=filename},
-	Get[FileNameJoin@{NotebookDirectory[],f}];
-	Print["FBLoadModel: model loaded from ",f];
+FBLoadModel[filename_]:=Module[{f=filename,path},
+	path=FileNameJoin@{NotebookDirectory[],f};
+	If[FileExistsQ[path],
+		Get[path];
+		Print["FBLoadModel: model loaded from ",f],
+		Print["FBLoadModel: file not found!"]
+	];
 	Return[0]
 ];
 
@@ -47,9 +51,10 @@ FBSetSeed[OptionsPattern[]]:=Module[{theta},
 ];
 
 FBMonteCarlo[nMCMC0_,theta0_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta0,sigma,dbf,derr,time,l,r,tnew,lnew,alpha,meanAlpha=1.,rdata,ralpha,prog=0},
-	
-	Print["FBMonteCarlo: running fit..."];
+	Print["FBMonteCarlo: running fit.."];
+	If[definedQ[]==False,Print["FBMonteCarlo: global variables not defined! Quitting kernel for safety."];Quit[]];
 	Print[ProgressIndicator[Dynamic[prog/nMCMC]]];
+	
 	sigma=OptionValue["SigmaGetNew"];
 	
 	dbf=FBGetDataBestFit[];
@@ -89,6 +94,13 @@ FBMonteCarlo[nMCMC0_,theta0_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta0,si
 ];
 
 (* ::Internal functions:: *)
+
+definedQ[]:=Module[{t},
+	t={ValueQ[Global`Yu],ValueQ[Global`Yd],ValueQ[Global`Mnu],ValueQ[Global`Ye],
+		ValueQ[Global`InputVariables],ValueQ[Global`StartBounds],
+		ValueQ[Global`IsReal],ValueQ[Global`IsPhase],ValueQ[Global`IsQuark],ValueQ[Global`IsLepton]};
+	And@@t
+]
 
 likelihood[theta_,databestfit_,dataerrors_]:=Module[{m,ca,pu,chi2},
 	m={Yu,Yd,mnu,Ye}/.Thread[inputVariables->theta];
