@@ -11,8 +11,8 @@ Begin["`Private`"];
 (* ::Function options:: *)
 
 Options[FBLoadBestFitsAndErrors]={"Model"->"MSSM","MSUSY"->1,"ScaleMu"->100};
-Options[FBGetDataBestFit]={"Model"->"MSSM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.};
-Options[FBGetDataErrors]=Options[FBGetDataBestFit];
+Options[FBGetDataBestFit]={"Model"->"MSSM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.,"Sector"->"All"};
+Options[FBGetDataErrors]={"Model"->"MSSM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.,"Sector"->"All","ExcludeParameters"->{}};
 
 (* ::Public functions:: *)
 
@@ -26,22 +26,25 @@ FBLoadBestFitsAndErrors[opts:OptionsPattern[]]:=Module[{model},
 	]
 ];
 
-FBGetDataBestFit[OptionsPattern[]]:=Module[{model},
+FBGetDataBestFit[OptionsPattern[]]:=Module[{model,sec},
 	model=OptionValue["Model"];
+	sec=OptionValue["Sector"];
 	Switch[model,
-	"MSSM",getDataBestFitMSSM[OptionValue["TanB"],OptionValue["EtaB"]],
-	"SM",getDataBestFitSM[OptionValue["ScaleMu"]],
+	"MSSM",getDataBestFitMSSM[sec,OptionValue["TanB"],OptionValue["EtaB"]],
+	"SM",getDataBestFitSM[sec,OptionValue["ScaleMu"]],
 	_,printBadModel[]
 	]
 ];
 
-FBGetDataErrors[OptionsPattern[]]:=Module[{model},
+FBGetDataErrors[OptionsPattern[]]:=Module[{model,sec,err},
 	model=OptionValue["Model"];
-	Switch[model,
-	"MSSM",getDataErrorsMSSM[OptionValue["TanB"],OptionValue["EtaB"]],
-	"SM",getDataErrorsSM[OptionValue["ScaleMu"]],
+	sec=OptionValue["Sector"];
+	err=Switch[model,
+	"MSSM",getDataErrorsMSSM[sec,OptionValue["TanB"],OptionValue["EtaB"]],
+	"SM",getDataErrorsSM[sec,OptionValue["ScaleMu"]],
 	_,printBadModel[]
-	]
+	];	
+	ReplacePart[err,#->10^8.&/@OptionValue["ExcludeParameters"]]
 ];
 
 (* ::Internal functions:: *)
@@ -134,33 +137,37 @@ importDataFile[yuk_,MSUSY_]:=Module[{dDir,endName,fileName},
 
 
 
-getDataBestFitSM[mu_]:=getDataBestFitSM[mu]={
-	theta12q,theta13q,theta23q,deltaq,yu,yc,yt,yd,ys,yb,
-	theta12l,theta13l,theta23l,deltal,dm21,dm31,ye,ymu,ytau
-};
+getDataBestFitSM[sec_,mu_]:=getDataBestFitSM[sec,mu]=Module[{q,l},
+	q={theta12q,theta13q,theta23q,deltaq,yu,yc,yt,yd,ys,yb};
+	l={theta12l,theta13l,theta23l,deltal,dm21,dm31,ye,ymu,ytau};
+	Switch[sec,"Q",q,"L",l,_,Join[q,l]]
+];
 
-getDataErrorsSM[mu_]:=getDataErrorsSM[mu]={
-	errtheta12q,errtheta13q,errtheta23q,errdeltaq,erryu,erryc,erryt,erryd,errys,erryb,
-	errtheta12l,errtheta13l,errtheta23l,errdeltal,errdm21,errdm31,errye,errymu,errytau
-};
+getDataErrorsSM[sec_,mu_]:=getDataErrorsSM[sec,mu]=Module[{q,l},
+	q={errtheta12q,errtheta13q,errtheta23q,errdeltaq,erryu,erryc,erryt,erryd,errys,erryb};
+	l={errtheta12l,errtheta13l,errtheta23l,errdeltal,errdm21,errdm31,errye,errymu,errytau};
+	Switch[sec,"Q",q,"L",l,_,Join[q,l]]
+];
 
-getDataBestFitMSSM[tanBeta_,etaB_]:=getDataBestFitMSSM[tanBeta,etaB]={
-	theta12q,theta13q[tanBeta,etaB],theta23q[tanBeta,etaB],deltaq,
-	yu[tanBeta,etaB],yc[tanBeta,etaB],yt[tanBeta,etaB],
-	yd[tanBeta,etaB],ys[tanBeta,etaB],yb[tanBeta,etaB],
-	theta12l,theta13l,theta23l,deltal,
-	dm21,dm31,
-	ye[tanBeta,etaB],ymu[tanBeta,etaB],ytau[tanBeta,etaB]
-};
+getDataBestFitMSSM[sec_,tanBeta_,etaB_]:=getDataBestFitMSSM[sec,tanBeta,etaB]=Module[{q,l},
+	q={theta12q,theta13q[tanBeta,etaB],theta23q[tanBeta,etaB],deltaq,
+		yu[tanBeta,etaB],yc[tanBeta,etaB],yt[tanBeta,etaB],
+		yd[tanBeta,etaB],ys[tanBeta,etaB],yb[tanBeta,etaB]};
+	l={theta12l,theta13l,theta23l,deltal,
+		dm21,dm31,
+		ye[tanBeta,etaB],ymu[tanBeta,etaB],ytau[tanBeta,etaB]};
+	Switch[sec,"Q",q,"L",l,_,Join[q,l]]
+];
 
-getDataErrorsMSSM[tanBeta_,etaB_]:=getDataErrorsMSSM[tanBeta,etaB]={
-	errtheta12q,errtheta13q[tanBeta,etaB],errtheta23q[tanBeta,etaB],errdeltaq,
-	erryu[tanBeta,etaB],erryc[tanBeta,etaB],erryt[tanBeta,etaB],
-	erryd[tanBeta,etaB],errys[tanBeta,etaB],erryb[tanBeta,etaB],
-	errtheta12l,errtheta13l,errtheta23l,errdeltal,
-	errdm21,errdm31,
-	errye[tanBeta,etaB],errymu[tanBeta,etaB],errytau[tanBeta,etaB]
-};
+getDataErrorsMSSM[sec_,tanBeta_,etaB_]:=getDataErrorsMSSM[sec,tanBeta,etaB]=Module[{q,l},
+	q={errtheta12q,errtheta13q[tanBeta,etaB],errtheta23q[tanBeta,etaB],errdeltaq,
+		erryu[tanBeta,etaB],erryc[tanBeta,etaB],erryt[tanBeta,etaB],
+		erryd[tanBeta,etaB],errys[tanBeta,etaB],erryb[tanBeta,etaB]};
+	l={errtheta12l,errtheta13l,errtheta23l,errdeltal,
+		errdm21,errdm31,
+		errye[tanBeta,etaB],errymu[tanBeta,etaB],errytau[tanBeta,etaB]};
+	Switch[sec,"Q",q,"L",l,_,Join[q,l]]
+];
 
 End[];
 EndPackage[];

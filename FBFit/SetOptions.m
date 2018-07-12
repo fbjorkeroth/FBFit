@@ -22,13 +22,14 @@ Options[FBSetOptions]={
 	"SeedSignFlip"->False,
 	"SeedSmear"->False,
 	"SigmaGetNew"->0.01,
-	"ThinningSaveFile"->1
+	"ThinningSaveFile"->1,
+	"Sector"->"All"
 };
 
 (* ::Public functions:: *)
 
-FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf},
-	{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf}=OptionValue[#]&/@{
+FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf,sec},
+	{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf,sec}=OptionValue[#]&/@{
 		"SaveOutput",
 		"Analysis",
 		"Model",
@@ -42,20 +43,23 @@ FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ss
 		"SeedSignFlip",
 		"SeedSmear",
 		"SigmaGetNew",
-		"ThinningSaveFile"
+		"ThinningSaveFile",
+		"Sector"
 		};
 		
 	SetOptions[FBFit`FBSetSeed,{"SeedSignFlip"->ssf,"SeedSmear"->ss}];
-	SetOptions[FBFit`FBMonteCarlo,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb,"BurnIn"->bu,
-			"VaryAcceptance"->va,"ExcludeParameters"->ep,"SigmaGetNew"->sigma,"SaveOutput"->save,"ThinningSaveFile"->tsf}];
+	SetOptions[FBFit`FBGetPhysicalParameters,{"Sector"->sec}];
+	SetOptions[FBFit`FBMonteCarlo,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb,"BurnIn"->bu,"VaryAcceptance"->va,
+		"SigmaGetNew"->sigma,"SaveOutput"->save,"ThinningSaveFile"->tsf,"Sector"->sec}];
 
 	SetOptions[FBFit`BestFitsAndErrors`FBLoadBestFitsAndErrors,{"Model"->m,"MSUSY"->ms,"ScaleMu"->scmu}];
-	SetOptions[FBFit`BestFitsAndErrors`FBGetDataBestFit,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb}];
-	SetOptions[FBFit`BestFitsAndErrors`FBGetDataErrors,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb}];
+	SetOptions[FBFit`BestFitsAndErrors`FBGetDataBestFit,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb,"Sector"->sec}];
+	SetOptions[FBFit`BestFitsAndErrors`FBGetDataErrors,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb,
+		"Sector"->sec,"ExcludeParameters"->ep}];
 
-	SetOptions[FBFit`Analysis`FBPrintInput,{"Model"->m,"TanB"->tb,"EtaB"->eb,"ExcludeParameters"->ep}];
+	SetOptions[FBFit`Analysis`FBPrintInput,{"Model"->m,"TanB"->tb,"EtaB"->eb}];
 	SetOptions[FBFit`Analysis`FBPrintOutput,{"Model"->m,"TanB"->tb,"EtaB"->eb}];
-	SetOptions[FBFit`Analysis`FBPlotPulls,{"Model"->m,"TanB"->tb,"EtaB"->eb,"ExcludeParameters"->ep}];
+	SetOptions[FBFit`Analysis`FBPlotPulls,{"Model"->m,"TanB"->tb,"EtaB"->eb}];
 
 	SetOptions[FBSetOptions,opts];
 	Print["FBSetOptions: fit specs set: ",ToString[{opts}]];

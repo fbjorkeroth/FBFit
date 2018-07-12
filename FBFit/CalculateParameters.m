@@ -17,6 +17,14 @@ FBCalculateParameters[Yu_?MPTNumericMatrixQ,Yd_?MPTNumericMatrixQ,mnu_?MPTNumeri
 	calculateParametersL[mnu,Ye]
 ];
 
+FBCalculateParameters[mat1_?MPTNumericMatrixQ,mat2_?MPTNumericMatrixQ,type_?StringQ]:=Module[{f},
+	f=Switch[type,
+		"Q",calculateParametersQ,
+		"L",calculateParametersL
+	];
+	f[mat1,mat2]
+];
+
 FBGetPulls[calcparam_?(VectorQ[#,NumericQ]&),bestfit_?(VectorQ[#,NumericQ]&),errors_?(VectorQ[#,NumericQ]&)]:=
 	Table[(calcparam[[i]]-bestfit[[i]])/errors[[i]],{i,Length@calcparam}];
 

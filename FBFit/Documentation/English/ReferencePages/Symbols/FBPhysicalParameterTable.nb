@@ -51,7 +51,7 @@ Cell["FBFit`", "Categorization",
  CellLabel->"Context",
  CellID->468444828,ExpressionUUID->"92b03a2c-ba66-4d89-8f4c-e4e3a22fac97"],
 
-Cell["FBFit/ref/FBPhysicalParameters", "Categorization",
+Cell["FBFit/ref/FBPhysicalParameterTable", "Categorization",
  CellLabel->"URI",ExpressionUUID->"7c97b3f3-2177-40f4-8125-42784c8ad23a"]
 }, Closed]],
 
@@ -130,13 +130,13 @@ Cell["XXXX", "Details",
 
 Cell[CellGroupData[{
 
-Cell["FBPhysicalParameters", "ObjectName",
+Cell["FBPhysicalParameterTable", "ObjectName",
  CellID->1224892054,ExpressionUUID->"2f596f83-c8a1-49eb-b455-e0ceafb6d2d9"],
 
 Cell[TextData[{
  Cell["   ", "ModInfo",ExpressionUUID->"4d49d1a9-0d1b-4a34-b1ed-f70de67c6160"],
  Cell[BoxData[
-  RowBox[{"FBPhysicalParameters", "[", 
+  RowBox[{"FBPhysicalParameterTable", "[", 
    RowBox[{
     StyleBox["d", "TI"], ",", 
     StyleBox["v", "TI"]}], "]"}]], "InlineFormula",ExpressionUUID->
@@ -157,7 +157,7 @@ Cell[TextData[{
 
 Cell[TextData[{
  Cell[BoxData[
- "FBPhysicalParameters"], "InlineFormula",ExpressionUUID->
+ "FBPhysicalParameterTable"], "InlineFormula",ExpressionUUID->
   "169d762f-40b6-4bb5-b66d-ecbc12d1f231"],
  " generates a list of predictions for a single physical parameter, such as a \
 Yukawa coupling eigenvalue."

@@ -1,14 +1,22 @@
+(* ::Package:: *)
+
 (* ::Title:: *)
 (*Simple MCMC*)
 
+
 Get["FBFit`"];
 
-FBLoadModel["models/model.m"];
-nMCMC=1000;
+FBLoadModel["models/C1.m"];
+nMCMC=10000;
 FBSetOptions[
 	"Model"->"SM",
-	"SaveOutput"->False
+	"SaveOutput"->False,
+	"ThinningSaveFile"->1,
+	"BurnIn"->0
 ];
 FBLoadBestFitsAndErrors[];
-\[Theta]0=FBSetSeed[];
-l=FBMonteCarlo[nMCMC,\[Theta]0];
+\[Theta]0=FBSetSeed[1];
+l=FBMonteCarlo[nMCMC,\[Theta]0]//AbsoluteTiming
+
+
+

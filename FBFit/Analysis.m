@@ -10,7 +10,7 @@ FBPrintInput::usage="prints the best fit \!\(\*SuperscriptBox[\(\[Chi]\), \(2\)]
 FBPrintOutput::usage="prints the best fit physical parameters.";
 FBPlotPulls::usage="plots a bar chart of the pulls of each output parameter.";
 
-FBPhysicalParameters::usage="Outputs the physical parameters (Yukawa eigenvalues, mixing parameters) for a given set of input data. Option exists to thin this data for quicker evaluation.";
+FBPhysicalParameterTable::usage="Outputs the physical parameters (Yukawa eigenvalues, mixing parameters) for a given set of input data. Option exists to thin this data for quicker evaluation.";
 FBCredibleInterval::usage="Calculates the N% credible interval for physical (Yukawa, mixing) parameters for a given input data set.";
 FBPlotHistogram::usage="Plots histogram of physical output data.";
 
@@ -20,11 +20,11 @@ Begin["Private`"];
 
 (* ::Function options:: *)
 
-Options[FBPrintInput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"ExcludeParameters"->{}};
-Options[FBPrintOutput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.};
-Options[FBPlotPulls]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"ExcludeParameters"->{}};
+Options[FBPrintInput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"Sector"->"All"};
+Options[FBPrintOutput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"Sector"->"All"};
+Options[FBPlotPulls]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"Sector"->"All"};
 
-Options[FBPhysicalParameters]={"Thinning"->1};
+Options[FBPhysicalParameterTable]={"Thinning"->1,"Sector"->"All"};
 Options[FBCredibleInterval]={"Thinning"->1,"SigmaSpan"->3,"PixelDensity"->100,"Plot"->True};
 Options[FBPlotHistogram]={"Thinning"->1,"ImageSize"->300,"Bins"->30};
 
@@ -36,7 +36,6 @@ mnu = Global`Mnu;
 Ye = Global`Ye;
 
 inputVariables = Global`InputVariables;
-(*inLabels = Global`InLabels;*)
 inLabels = ToString/@(Global`InLabels);
 startBounds = Global`StartBounds;
 
@@ -66,9 +65,9 @@ FBExtractBestInput[inputdata_]:=Module[{data=inputdata,lRow,chisq,best},
 
 FBPrintInput[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,dataerrors,titles,chisq,table},
 	databestfit=FBGetDataBestFit[];
-	dataerrors=ReplacePart[FBGetDataErrors[],#->10^8.&/@OptionValue["ExcludeParameters"]];
+	dataerrors=FBGetDataErrors[];
 	titles={"Parameter","Value"};
-	chisq=FBChiSq[FBGetPulls[FBCalculateParameters[Yu,Yd,mnu,Ye],databestfit,dataerrors]]/.Thread[inputVariables->t];
+	chisq=FBChiSq[FBGetPulls[FBGetPhysicalParameters[theta],databestfit,dataerrors]];
 	table=MatrixForm@Prepend[Transpose@{inLabels[[#]],t[[#]]},titles]&/@{isQuark,isLepton};
 	Print[
 		"\!\(\*SuperscriptBox[\(\[Chi]\), \(2\)]\): ",chisq,
@@ -78,7 +77,7 @@ FBPrintInput[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,dataerrors,ti
 
 FBPrintOutput[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,calc,titles,table,x},
 	databestfit=FBGetDataBestFit[];
-	calc=FBCalculateParameters[Yu,Yd,mnu,Ye]/.Thread[inputVariables->t];
+	calc=FBGetPhysicalParameters[t];
 	titles={"Parameter","Data","Model"};
 	table=MatrixForm@Prepend[Transpose@{outLabels,databestfit,calc},titles];
 	x=ScientificForm[table,4,ExponentFunction->(If[-2<#<3,Null,#]&)];
@@ -87,20 +86,20 @@ FBPrintOutput[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,calc,titles,
 
 FBPlotPulls[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,dataerrors,calc,pulls},
 	databestfit=FBGetDataBestFit[];
-	dataerrors=ReplacePart[FBGetDataErrors[],#->10^8.&/@OptionValue["ExcludeParameters"]];
-	calc=FBCalculateParameters[Yu,Yd,mnu,Ye]/.Thread[inputVariables->t];
+	dataerrors=FBGetDataErrors[];
+	calc=FBGetPhysicalParameters[t];
 	pulls=FBGetPulls[calc,databestfit,dataerrors];
 	Print@BarChart[pulls,ChartLabels->outLabels,AxesLabel->"Pull",ImageSize->Large,AspectRatio->1/2,BaseStyle->FontSize->12]
 ];
 
-FBPhysicalParameters[inputdata_,variable_,OptionsPattern[]]:=Module[{data=inputdata,dataThinned,n=variable},
+FBPhysicalParameterTable[inputdata_,variable_,OptionsPattern[]]:=Module[{data=inputdata,dataThinned,n=variable},
 	dataThinned=Take[data,{1,Length[data],OptionValue["Thinning"]}];
-	(FBCalculateParameters[Yu,Yd,mnu,Ye]/.Thread[inputVariables->dataThinned[[#,;;-2]]])[[n]]&/@Range[Length[dataThinned]]
+	FBGetPhysicalParameters[#][[n]]&/@dataThinned[[;;,;;-2]]
 ];
 
 
 FBCredibleInterval[inputdata_,variable_,CIlevel_,OptionsPattern[]]:=Module[{data=inputdata,n=variable,level=CIlevel,l,mu,std,pdf,spacing,grid,t,plot,ci},
-	l=FBPhysicalParameters[data,n,"Thinning"->OptionValue["Thinning"]];
+	l=FBPhysicalParameterTable[data,n,"Thinning"->OptionValue["Thinning"]];
 	{mu,std,pdf}=#[l]&/@{Mean,StandardDeviation,SmoothKernelDistribution};
 	spacing=10std/OptionValue["PixelDensity"];
 	grid=Table[PDF[pdf,{mu-OptionValue["SigmaSpan"] std+spacing*i}],{i,OptionValue["PixelDensity"]}];
@@ -124,7 +123,7 @@ FBCredibleInterval[inputdata_,variable_,CIlevel_,OptionsPattern[]]:=Module[{data
 FBPlotHistogram[inputdata_,variable_,OptionsPattern[]]:=Module[{data=inputdata,n=variable,bf,err,p,bins,h,maxH,line},
 	bf=FBGetDataBestFit[][[n]];
 	err=FBGetDataErrors[][[n]];
-	p=FBPhysicalParameters[data,n,"Thinning"->OptionValue["Thinning"]];
+	p=FBPhysicalParameterTable[data,n,"Thinning"->OptionValue["Thinning"]];
 	{bins, h} = HistogramList[p,OptionValue["Bins"]];
 	maxH=Max[h];
 	line[x_]:=Line[{{x,0},{x,maxH+2}}];

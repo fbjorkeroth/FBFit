@@ -4,6 +4,7 @@ BeginPackage["FBFit`",{"FBFit`CalculateParameters`","FBFit`BestFitsAndErrors`","
 
 FBLoadModel::usage="Initialises the Yukawa matrices and associated variables.";
 FBSetSeed::usage="Choose the seed input values for the MCMC.";
+FBGetPhysicalParameters::usage="Calculates the physical parameters (couplings, mixing angles) for a given input set.";
 FBMonteCarlo::usage="Runs a Monte Carlo chain of length nMCMC.";
 
 Begin["`Private`"];
@@ -11,18 +12,18 @@ Begin["`Private`"];
 (* ::Function options:: *)
 
 Options[FBSetSeed]={"SeedSignFlip"->False,"SeedSmear"->False};
-Options[FBMonteCarlo]={"Model"->"MSSM","ScaleMu"->1*^12,"TanB"->5.,"EtaB"->0.,"ExcludeParameters"->{},
-	"VaryAcceptance"->True,"BurnIn"->0,"SigmaGetNew"->0.01,"SaveOutput"->True,"ThinningSaveFile"->1};
+Options[FBGetPhysicalParameters]={"Sector"->"All"};
+Options[FBMonteCarlo]={"Model"->"MSSM","ScaleMu"->1*^12,"TanB"->5.,"EtaB"->0.,"VaryAcceptance"->True,
+	"BurnIn"->0,"SigmaGetNew"->0.01,"SaveOutput"->True,"ThinningSaveFile"->1,"Sector"->"All"};
 
 (* ::Global variables:: *)
 
 Yu = Global`Yu;
 Yd = Global`Yd;
-mnu = Global`Mnu;
+Mnu = Global`Mnu;
 Ye = Global`Ye;
 
 inputVariables = Global`InputVariables;
-(*inLabels = Global`InLabels;*)
 startBounds = Global`StartBounds;
 
 isReal = Global`IsReal;
@@ -51,18 +52,31 @@ FBSetSeed[seed_:Null,OptionsPattern[]]:=Module[{theta,s=seed},
 	theta
 ];
 
-FBMonteCarlo[nMCMC0_,theta0_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta0,sigma,dbf,derr,time,l,r,tnew,lnew,alpha,meanAlpha=1.,rdata,ralpha,prog=0},
+FBGetPhysicalParameters[theta_,OptionsPattern[]]:=Module[{thr,sec},
+	thr=Thread[inputVariables->theta];
+	sec=OptionValue["Sector"];
+	Switch[sec,
+		"Q",FBCalculateParameters[Yu,Yd,"Q"]/.thr,
+		"L",FBCalculateParameters[Mnu,Ye,"L"]/.thr,
+		sec,FBCalculateParameters[Yu,Yd,Mnu,Ye]/.thr
+	]
+];
+
+FBMonteCarlo[nMCMC0_,theta_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta,sigma,b,dbf,derr,time,l,r,tnew,lnew,alpha,meanAlpha=1.,rdata,ralpha,prog=0},
 	Print["FBMonteCarlo: running fit.."];
-	If[definedQ[]==False,Print["FBMonteCarlo: global variables not defined! Quitting kernel for safety."];Quit[]];
-	Print[ProgressIndicator[Dynamic[prog/nMCMC]]];
 	
-	sigma=OptionValue["SigmaGetNew"];
+	If[definedQ[OptionValue["Sector"]]==False,Print["FBMonteCarlo: global variables not defined! Quitting kernel for safety."];Quit[]];
+	
+	sigma=OptionValue["SigmaGetNew"];	
+	b=checkBurnIn[OptionValue["BurnIn"],nMCMC];
 	
 	dbf=FBGetDataBestFit[];
-	derr=ReplacePart[FBGetDataErrors[],#->10^8.&/@OptionValue["ExcludeParameters"]];
+	derr=FBGetDataErrors[];
 	
 	time=Now;
 	l=likelihood[t,dbf,derr];
+	
+	Print[ProgressIndicator[Dynamic[prog/nMCMC]]];
 	r=Reap[Do[(* Calculates the new link in the MCMC chain. *)
 		tnew=getNewTheta[t,sigma]; (* Get input parameters for new link *)
 		lnew=likelihood[tnew,dbf,derr];
@@ -73,7 +87,7 @@ FBMonteCarlo[nMCMC0_,theta0_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta0,si
 		If[OptionValue["VaryAcceptance"]==True,{sigma,meanAlpha}=updateSigma[sigma,meanAlpha,alpha,n]]; 
 		(* Functionality for progressively updating the Gaussian width. *)
 
-		If[n>OptionValue["BurnIn"],
+		If[n>b,
 			Sow[Flatten[{t,-2Log[l]}],"Data"];
 			Sow[alpha,"Alpha"]
 		]; (* Adds the link to the output chain *)
@@ -96,19 +110,29 @@ FBMonteCarlo[nMCMC0_,theta0_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta0,si
 
 (* ::Internal functions:: *)
 
-definedQ[]:=Module[{t},
-	t={ValueQ[Global`Yu],ValueQ[Global`Yd],ValueQ[Global`Mnu],ValueQ[Global`Ye],
-		ValueQ[Global`InputVariables],ValueQ[Global`StartBounds],
-		ValueQ[Global`IsReal],ValueQ[Global`IsPhase],ValueQ[Global`IsQuark],ValueQ[Global`IsLepton]};
-	And@@t
-]
+definedQ[sec_]:=Module[{q,l,inp,is,checklist},
+	q={ValueQ[Global`Yu],ValueQ[Global`Yd]};
+	l={ValueQ[Global`Mnu],ValueQ[Global`Ye]};
+	inp={ValueQ[Global`InputVariables],ValueQ[Global`StartBounds],ValueQ[Global`IsReal],ValueQ[Global`IsPhase]};
+	is={ValueQ[Global`IsQuark],ValueQ[Global`IsLepton]};
+	checklist=Switch[sec,
+		"Q",Join[q,inp],
+		"L",Join[l,inp],
+		_,Join[q,l,inp,is]
+	];
+	And@@checklist
+];
 
-likelihood[theta_,databestfit_,dataerrors_]:=Module[{m,ca,pu,chi2},
-	m={Yu,Yd,mnu,Ye}/.Thread[inputVariables->theta];
-	ca=FBCalculateParameters@@m;
+likelihood[theta_,databestfit_,dataerrors_]:=Module[{ca,pu,chi2},
+	ca=FBGetPhysicalParameters[theta];
 	pu=FBGetPulls[ca,databestfit,dataerrors];
 	chi2=FBChiSq[pu];
 	Exp[-chi2/2]
+];
+
+checkBurnIn[burnin_,n_]:=If[burnin>n,
+	Print["FBMonteCarlo: burn-in larger than chain length! Setting to zero.."];0,
+	burnin
 ];
 
 printBadModel[]:=Module[{},Print["Model not supported. Quitting kernel for safety.."];Quit[]];

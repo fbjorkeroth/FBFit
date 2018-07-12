@@ -231,9 +231,9 @@ Cell[TextData[ButtonBox["FBMonteCarlo",
  ButtonData->"paclet:FBFit/ref/FBMonteCarlo"]], "TOCSection",ExpressionUUID->\
 "006a8c05-a049-4f8d-9f5c-7548141e7ed0"],
 
-Cell[TextData[ButtonBox["FBPhysicalParameters",
+Cell[TextData[ButtonBox["FBPhysicalParameterTable",
  BaseStyle->"Link",
- ButtonData->"paclet:FBFit/ref/FBPhysicalParameters"]], "TOCSection",Expressio\
+ ButtonData->"paclet:FBFit/ref/FBPhysicalParameterTable"]], "TOCSection",Expressio\
 nUUID->"3e3cf8db-a57a-4ca7-aca1-02a4f5f5ed49"],
 
 Cell[TextData[ButtonBox["FBPlotHistogram",
