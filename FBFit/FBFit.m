@@ -43,7 +43,8 @@ FBLoadModel[filename_]:=Module[{f=filename,path},
 ];
 
 
-FBSetSeed[OptionsPattern[]]:=Module[{theta},
+FBSetSeed[seed_:Null,OptionsPattern[]]:=Module[{theta,s=seed},
+	If[s === Null, SeedRandom[], SeedRandom[s]];
 	theta=N[RandomReal/@startBounds];
 	If[OptionValue["SeedSignFlip"],theta=flip[theta]];
 	If[OptionValue["SeedSmear"],theta=smear[theta]];
