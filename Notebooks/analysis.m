@@ -1,24 +1,49 @@
+(* ::Package:: *)
+
 (* ::Title:: *)
 (*MCMC analysis*)
+
 
 (* ::Section:: *)
 (*Load packages and data*)
 
+
 Get["FBFit`"];
 
-FBLoadModel["models/model.m"];
-
+FBLoadModel["models/C8.m"];
 FBImportFrom["test"];
 
 likelihoodTable=Import["rundata.txt","Table"];
 acceptanceList=Import["acceptance.log","List"];
+sigmaList=Import["sigma.log","List"];
 options=Import["variables.mx"];
 
 FBSetOptions@@options;
 FBLoadBestFitsAndErrors[];
 
+
 (* ::Section:: *)
-(*Plot best fit point*)
+(*Analysis*)
+
+
+(* ::Subsection:: *)
+(*Adjust data table*)
+
+
+likelihoodTable=FBChopDataFraction[likelihoodTable,0.25];
+
+
+(* ::Subsection:: *)
+(*Evolution of \[Chi]^2*)
+
+
+chisqList=likelihoodTable[[;;,-1]];
+ListPlot[chisqList]
+
+
+(* ::Subsection:: *)
+(*Best fit point*)
+
 
 thetaBest=FBExtractBestInput[likelihoodTable];
 
@@ -26,53 +51,47 @@ FBPrintInput[thetaBest];
 FBPrintOutput[thetaBest];
 FBPlotPulls[thetaBest];
 
-(* ::Section:: *)
-(*Analytics*)
 
-(* ::Subsection:: *)
-(*Evolution of \[Alpha] (acceptance)*)
+(* ::Subsubsection:: *)
+(*Reconstruct matrices*)
 
-chisqList=likelihoodTable[[;;,-1]];
 
-Histogram[chisqList]
-chisqHist=Block[{ch,div=100,index,me},
-	ch=chisqList/Mean[chisqList];
-	index=Table[i,{i,Length[ch]}];
-	Transpose[Mean/@Partition[#,div]&/@{index,ch}]
-];
-ListPlot[chisqHist,Joined->True]
+yun=Yu/.Thread[InputVariables->thetaBest];
+yun//MatrixForm
+ydn=Yd/.Thread[InputVariables->thetaBest];
+ydn//MatrixForm
 
-ListPlot[MovingAverage[acceptanceList,100]]
+
+(*Quiet@Needs["MixingParameterTools`MPT3x3`"];*)
+CKMParameters[yun,DiagonalMatrix@{1,2,3}][[1]]
+CKMParameters[ydn,DiagonalMatrix@{1,2,3}][[1]]
+CKMParameters[yun,ydn][[1]]
 
 
 (* ::Subsection:: *)
-(*Evolution of mean \[Sigma]*)
+(*Evolution of links (\[Alpha], \[Sigma])*)
 
 
-checkt=List[];
-Do[
-	\[Sigma]mean=Table[Mean[acceptanceList[[;;n]]],{n,NNN}]//AbsoluteTiming;
-	AppendTo[checkt,{NNN,\[Sigma]mean[[1]]}],
-	{NNN,100,10000,100}
-];
-ListPlot[checkt]
-(*ListLogLinearPlot[\[Sigma]mean[[2]],Joined->True,PlotRange->All]*)
+range=1000;
+ma=ListLogLinearPlot[Table[Mean[acceptanceList[[;;n]]],{n,range}],GridLines->{{},{0.3,0.5}},PlotRange->All,Joined->True];
+si=ListLogLinearPlot[40sigmaList,PlotRange->{{1,range},All},PlotStyle->Orange];
+ac=ListLogLinearPlot[acceptanceList,PlotRange->{{1,range},All}];
+Show[{ma,si}]
 
 
-(* ::Section:: *)
-(*Reconstruct Yukawa matrices*)
+(* ::Subsection:: *)
+(*Output parameter distributions*)
 
 
-Yu/.Thread[inputVariables->thetaBest]//Eigenvalues//Abs;
-Yu/.Thread[inputVariables->thetaBest]//Abs//MatrixForm
-
-Yd/.Thread[inputVariables->thetaBest]//Eigenvalues//Abs;
-Yd/.Thread[inputVariables->thetaBest]//Abs//MatrixForm
+(* ::Subsubsection:: *)
+(*Histogram*)
 
 
-(* ::Section:: *)
-(*Bayesian analysis*)
+FBPlotHistogram[likelihoodTable,7,"Thinning"->20,"Bins"->50]
 
 
-FBPlotHistogram[likelihoodTable,1,"Thinning"->1,"Bins"->20]
+(* ::Subsubsection:: *)
+(*Credible interval*)
+
+
 (*FBCredibleInterval[likelihoodTable,#,0.95,"Thinning"\[Rule]100]&/@Range[1,10];*)
