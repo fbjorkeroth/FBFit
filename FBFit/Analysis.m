@@ -29,22 +29,6 @@ Options[FBPhysicalParameterTable]={"Thinning"->1,"Sector"->"All"};
 Options[FBCredibleInterval]={"Thinning"->1,"SigmaSpan"->3,"PixelDensity"->100,"Plot"->True};
 Options[FBPlotHistogram]={"Thinning"->1,"ImageSize"->300,"Bins"->30};
 
-(* ::Global variables:: *)
-
-(*Yu = Global`Yu;
-Yd = Global`Yd;
-Mnu = Global`Mnu;
-Ye = Global`Ye;
-
-inputVariables = Global`InputVariables;
-inLabels = ToString/@(Global`InLabels);
-startBounds = Global`StartBounds;
-
-isReal = Global`IsReal;
-isPhase = Global`IsPhase;
-isQuark = Global`IsQuark;
-isLepton = Global`IsLepton;*)
-
 (* ::Public functions:: *)
 
 FBImportFrom[runname_]:=Module[{dir},

@@ -7,7 +7,6 @@ FBCalculateParameters::usage ="takes the neutrino mass matrix mnu and fermion Yu
 FBGetPulls::usage="takes as input the result of running FBCalculateParameters and generates a list containing the pulls (i.e. deviation from best fit).";
 FBChiSq::usage="takes the sum of squares of pulls to give the final \!\(\*SuperscriptBox[\(\[Chi]\), \(2\)]\) value.";
 
-
 Begin["`Private`"];
 
 (* ::Global variables:: *)

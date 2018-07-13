@@ -8,6 +8,12 @@ FBMonteCarlo::usage="Runs a Monte Carlo chain of length nMCMC.";
 
 Begin["`Private`"];
 
+(* ::Global variables:: *)
+
+startBounds = Global`StartBounds;
+isReal = Global`IsReal;
+isPhase = Global`IsPhase;
+
 (* ::Function options:: *)
 
 Options[FBSetSeed]={"SeedSignFlip"->False,"SeedSmear"->False};
@@ -48,7 +54,7 @@ FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,t
 	time=Now;
 	l=likelihood[t,dbf,derr];
 	
-	Print[ProgressIndicator[Dynamic[prog/nMCMC]]];
+	Print[ProgressIndicator[Dynamic[N[prog/nMCMC]]]];
 	r=Reap[Do[
 		tnew=getNewTheta[t,sigma];
 		lnew=likelihood[tnew,dbf,derr];
