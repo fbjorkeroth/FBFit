@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     18010,        467]
-NotebookOptionsPosition[     11276,        325]
-NotebookOutlinePosition[     11966,        350]
-CellTagsIndexPosition[     11887,        345]
+NotebookDataLength[     20032,        512]
+NotebookOptionsPosition[     13054,        366]
+NotebookOutlinePosition[     13744,        391]
+CellTagsIndexPosition[     13665,        386]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -253,38 +253,79 @@ Cell[TextData[{
 
 Cell[BoxData[GridBox[{
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "66657bc0-a72c-4f0b-8794-129afa58b901"], "\"\<Model\>\"", "\"\<SM\>\"", 
+     "f35d36e8-a428-43c3-8060-fbb0994c5bce"], "\"\<Model\>\"", "\"\<SM\>\"", 
     Cell[TextData[Cell[
     "Model", "TableText",ExpressionUUID->
-     "3503f787-6a50-412b-a06d-9ce96e454920"]], "TableText",ExpressionUUID->
-     "3974b52e-35fd-4b9b-882c-8a92a3ebd967"]},
+     "fc5a35e8-bf05-4f45-947d-650d9e35a812"]], "TableText",ExpressionUUID->
+     "3beff984-13f2-4741-81b3-6efdfae85e5e"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "7f0eb043-65e9-4bbc-949e-c23677356f15"], "\"\<TanB\>\"", "5.", Cell[
+     "e9400616-2ceb-4e5e-9418-1709dbac5440"], "\"\<TanB\>\"", "5.", Cell[
     TextData[Cell[TextData[Cell[BoxData[
     Cell[TextData[Cell[
      "tan \[Beta] in MSSM", "TableText",ExpressionUUID->
-      "2ac89d69-b31a-483f-bb93-be8aa326c984"]], "TableText",ExpressionUUID->
-      "4b36aaa4-47ca-4caa-93b8-3967a8f8aba7"]],
+      "6e1cbeee-eb47-4755-a6d5-e16071c9e953"]], "TableText",ExpressionUUID->
+      "5cae74a8-8dad-45ea-b94e-f708dfe98179"]],
      CellChangeTimes->{{3.740223850252262*^9, 3.740223890787142*^9}},
-     ExpressionUUID->"e5d3ee51-e991-4998-a583-42d74f5c7727"]], "TableText",
-     ExpressionUUID->"ea30738a-15c2-4bee-9331-89bbc7fe74d0"]], "TableText",
-     ExpressionUUID->"83832e72-a69b-46a2-95ec-559d5dedb692"]},
+     ExpressionUUID->"c36541db-9239-45a1-970e-1015c1add44d"]], "TableText",
+     ExpressionUUID->"e5a0f903-91ad-474a-95d6-b6b5860443f0"]], "TableText",
+     ExpressionUUID->"7e20084b-7d38-4906-87a5-b11d1d3c32c8"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "6b87fbe9-0298-4c34-ac3d-b909fd5bc7cb"], "\"\<EtaB\>\"", "0.", Cell[
+     "2fc661d8-8f51-4e07-b5a9-4af00c8b7bd0"], "\"\<EtaB\>\"", "0.", Cell[
     TextData[Cell[TextData[Cell[BoxData[Cell[TextData[{
       "Threshold corrections ",
       Cell[BoxData[
        SubscriptBox["\[Eta]", "b"]], "InlineFormula",ExpressionUUID->
-       "01409219-ee44-47c7-bcd0-f655b27eea15"]
-     }], "TableText",ExpressionUUID->"d09005e0-22d9-415c-8030-342dd85627e9"]],
+       "907d4759-8e72-4980-8e67-3c6cd824ec1c"]
+     }], "TableText",ExpressionUUID->"211873a9-7cd2-413f-8bb0-ba7c44b60b35"]],
      
      CellChangeTimes->{{3.740223850252262*^9, 3.740223890787142*^9}},
-     ExpressionUUID->"8e027f57-d55a-4ed4-94a6-633e2cb3fb15"]], "TableText",
-     ExpressionUUID->"30103e76-75b9-41ff-9db2-5504b4988503"]], "TableText",
-     ExpressionUUID->"afb1ec0c-4bba-4dfb-bcad-7973c3869c25"]}
+     ExpressionUUID->"3a001e09-2f38-45a4-9eab-baa99ce5d9e2"]], "TableText",
+     ExpressionUUID->"e4f2fa18-1b15-463c-a852-fe74fcca88b4"]], "TableText",
+     ExpressionUUID->"2e7e742f-60ed-473c-a1a4-4b3b9c246c9c"]},
+   {Cell["      ", "ModInfo",ExpressionUUID->
+     "c5759508-f827-4621-abcc-864d5a8db72a"], "\"\<Sector\>\"", "\"\<All\>\"",
+     Cell["Specify sector (quark or lepton)", "TableText",ExpressionUUID->
+     "44948e0d-4238-4392-9726-d6062550b042"]}
   }]], "3ColumnTableMod",
- CellChangeTimes->{{3.740224053445815*^9, 3.740224061003088*^9}},
- CellID->443719722,ExpressionUUID->"6c483de7-125d-43d2-b8be-fad347c6e52f"]
+ CellChangeTimes->{{3.740224053445815*^9, 3.740224061003088*^9}, {
+  3.740461036187188*^9, 3.740461095512373*^9}},
+ CellID->443719722,ExpressionUUID->"64994dfc-4e6a-419e-a0a3-34a988eb4884"],
+
+Cell[TextData[{
+ Cell[BoxData[
+ "\"\<Sector\>\""], "InlineFormula",ExpressionUUID->
+  "ebd468f6-3989-4bbc-982d-a011b73decee"],
+ " specifies the physical observables to calculate. For only quark sector \
+couplings and CKM parameters, set ",
+ Cell[BoxData[
+  RowBox[{"\"\<Sector\>\"", "->", "\"\<Q\>\""}]], "InlineFormula",
+  ExpressionUUID->"27f48458-df94-4f84-a18b-298cb11d4e19"],
+ ". For only charged lepton couplings, neutrino mass differences and PMNS \
+parameters, set ",
+ Cell[BoxData[
+  RowBox[{"\"\<Sector\>\"", "->", "\"\<L\>\""}]], "InlineFormula",
+  ExpressionUUID->"e8c4c0b5-bb20-47d4-8a5a-90a4e8f5ca80"],
+ ". Any other option will evaluate both. The default is ",
+ Cell[BoxData[
+  RowBox[{"\"\<Sector\>\"", "->", "\"\<All\>\""}]], "InlineFormula",
+  ExpressionUUID->"8cd70771-964e-481d-9a7a-800549f0a85c"],
+ "."
+}], "ExampleText",
+ CellChangeTimes->{{3.740460784754774*^9, 3.7404609676689777`*^9}, {
+  3.7404610713444633`*^9, 3.740461089330142*^9}},
+ CellID->332880934,ExpressionUUID->"241321c3-da1a-4bd7-99fb-0e1229de095c"],
+
+Cell[TextData[{
+ "This option is set by ",
+ Cell[BoxData[
+  ButtonBox["FBSetOptions",
+   BaseStyle->"Link",
+   ButtonData->"paclet:FBFit/ref/FBSetOptions"]], "InlineFormula",
+  ExpressionUUID->"7d0f0a50-0bdf-4eae-b91e-a7da22c1c65a"],
+ " and should typically not be set by hand."
+}], "ExampleText",
+ CellChangeTimes->{{3.740460784754774*^9, 3.7404610052585917`*^9}},
+ CellID->947140191,ExpressionUUID->"573545e6-7ee1-4126-b4cd-8ee41cf18c28"]
 }, Open  ]],
 
 Cell[BoxData[
@@ -344,7 +385,7 @@ CellTagsIndex->{
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"ExtendedExamples", 11694, 338}
+ {"ExtendedExamples", 13472, 379}
  }
 *)
 (*NotebookFileOutline
@@ -455,18 +496,22 @@ Cell[7432, 234, 244, 5, 21, "ExampleSection",ExpressionUUID->"d396e3d3-ef82-4674
  CellID->2061341341],
 Cell[7679, 241, 418, 10, 26, "ExampleText",ExpressionUUID->"cd94933f-e0b0-43d2-b4d1-863de1b3459b",
  CellID->1873344387],
-Cell[8100, 253, 1868, 33, 63, "3ColumnTableMod",ExpressionUUID->"6c483de7-125d-43d2-b8be-fad347c6e52f",
- CellID->443719722]
+Cell[8100, 253, 2164, 38, 81, "3ColumnTableMod",ExpressionUUID->"64994dfc-4e6a-419e-a0a3-34a988eb4884",
+ CellID->443719722],
+Cell[10267, 293, 1036, 22, 75, "ExampleText",ExpressionUUID->"241321c3-da1a-4bd7-99fb-0e1229de095c",
+ CellID->332880934],
+Cell[11306, 317, 440, 10, 26, "ExampleText",ExpressionUUID->"573545e6-7ee1-4126-b4cd-8ee41cf18c28",
+ CellID->947140191]
 }, Open  ]],
-Cell[9983, 289, 248, 5, 33, "ExampleSection",ExpressionUUID->"9537c614-eb61-4c51-9c2b-8b2943cd4418",
+Cell[11761, 330, 248, 5, 33, "ExampleSection",ExpressionUUID->"9537c614-eb61-4c51-9c2b-8b2943cd4418",
  CellID->258228157],
-Cell[10234, 296, 259, 5, 21, "ExampleSection",ExpressionUUID->"de2327e4-9a67-4898-84f0-a495dc9b5e2c",
+Cell[12012, 337, 259, 5, 21, "ExampleSection",ExpressionUUID->"de2327e4-9a67-4898-84f0-a495dc9b5e2c",
  CellID->2123667759],
-Cell[10496, 303, 252, 5, 21, "ExampleSection",ExpressionUUID->"3c8c459d-230b-4736-820e-1129d1e6f7a7",
+Cell[12274, 344, 252, 5, 21, "ExampleSection",ExpressionUUID->"3c8c459d-230b-4736-820e-1129d1e6f7a7",
  CellID->1305812373],
-Cell[10751, 310, 257, 5, 21, "ExampleSection",ExpressionUUID->"cfb65b75-a519-44e2-980f-1ffbe6756625",
+Cell[12529, 351, 257, 5, 21, "ExampleSection",ExpressionUUID->"cfb65b75-a519-44e2-980f-1ffbe6756625",
  CellID->1653164318],
-Cell[11011, 317, 249, 5, 21, "ExampleSection",ExpressionUUID->"413684a4-9bb5-45df-94f5-f2572fd280ec",
+Cell[12789, 358, 249, 5, 21, "ExampleSection",ExpressionUUID->"413684a4-9bb5-45df-94f5-f2572fd280ec",
  CellID->589267740]
 }, Open  ]]
 }

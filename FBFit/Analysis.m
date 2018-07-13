@@ -10,7 +10,8 @@ FBPrintInput::usage="prints the best fit \!\(\*SuperscriptBox[\(\[Chi]\), \(2\)]
 FBPrintOutput::usage="prints the best fit physical parameters.";
 FBPlotPulls::usage="plots a bar chart of the pulls of each output parameter.";
 
-FBPhysicalParameterTable::usage="Outputs the physical parameters (Yukawa eigenvalues, mixing parameters) for a given set of input data. Option exists to thin this data for quicker evaluation.";
+FBPhysicalParameterTable::usage="Outputs the physical parameters (Yukawa eigenvalues, mixing parameters) 
+	for a given set of input data. Option exists to thin this data for quicker evaluation.";
 FBCredibleInterval::usage="Calculates the N% credible interval for physical (Yukawa, mixing) parameters for a given input data set.";
 FBPlotHistogram::usage="Plots histogram of physical output data.";
 
@@ -20,9 +21,9 @@ Begin["Private`"];
 
 (* ::Function options:: *)
 
-Options[FBPrintInput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"Sector"->"All"};
+Options[FBPrintInput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.};
 Options[FBPrintOutput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"Sector"->"All"};
-Options[FBPlotPulls]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"Sector"->"All"};
+Options[FBPlotPulls]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.};
 
 Options[FBPhysicalParameterTable]={"Thinning"->1,"Sector"->"All"};
 Options[FBCredibleInterval]={"Thinning"->1,"SigmaSpan"->3,"PixelDensity"->100,"Plot"->True};
@@ -30,9 +31,9 @@ Options[FBPlotHistogram]={"Thinning"->1,"ImageSize"->300,"Bins"->30};
 
 (* ::Global variables:: *)
 
-Yu = Global`Yu;
+(*Yu = Global`Yu;
 Yd = Global`Yd;
-mnu = Global`Mnu;
+Mnu = Global`Mnu;
 Ye = Global`Ye;
 
 inputVariables = Global`InputVariables;
@@ -42,7 +43,7 @@ startBounds = Global`StartBounds;
 isReal = Global`IsReal;
 isPhase = Global`IsPhase;
 isQuark = Global`IsQuark;
-isLepton = Global`IsLepton;
+isLepton = Global`IsLepton;*)
 
 (* ::Public functions:: *)
 
@@ -66,11 +67,16 @@ FBPrintInput[t_,OptionsPattern[]]:=Module[{databestfit,dataerrors,titles,chisq,t
 	databestfit=FBGetDataBestFit[];
 	dataerrors=FBGetDataErrors[];
 	titles={"Parameter","Value"};
-	chisq=FBChiSq[FBGetPulls[FBGetPhysicalParameters[t],databestfit,dataerrors]];
-	table=MatrixForm@Prepend[Transpose@{inLabels[[#]],t[[#]]},titles]&/@{isQuark,isLepton};
-	Print[
+	chisq=FBChiSq[FBGetPulls[FBGetPhysicalParameters[t],databestfit,dataerrors]];	
+(*	table=MatrixForm@Prepend[Transpose@{inLabels[[#]],t[[#]]},titles]&/@{isQuark,isLepton};*)
+(*	Print[
 		"\!\(\*SuperscriptBox[\(\[Chi]\), \(2\)]\): ",chisq,
 		"\nInput: (quarks) ",table[[1]],"\t(leptons) ",table[[2]]
+	]*)
+	table=MatrixForm@Prepend[Transpose@{inLabels,t},titles];
+	Print[
+		"\!\(\*SuperscriptBox[\(\[Chi]\), \(2\)]\): ",chisq,
+		"\nInput: ",table
 	]
 ];
 
@@ -78,7 +84,7 @@ FBPrintOutput[t_,OptionsPattern[]]:=Module[{databestfit,calc,titles,table,x},
 	databestfit=FBGetDataBestFit[];
 	calc=FBGetPhysicalParameters[t];
 	titles={"Parameter","Data","Model"};
-	table=MatrixForm@Prepend[Transpose@{outLabels,databestfit,calc},titles];
+	table=MatrixForm@Prepend[Transpose@{outLabels[OptionValue["Sector"]],databestfit,calc},titles];
 	x=ScientificForm[table,4,ExponentFunction->(If[-2<#<3,Null,#]&)];
 	Print["Output: ",x]
 ];
@@ -142,30 +148,36 @@ FBChopDataFraction[inputdata_,bottomfraction_]:=Module[{n},
 
 printBadModel[]:=Module[{},Print["Model not supported. Quitting kernel for safety.."];Quit[]];
 
-outlabelsL={
-	"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(12\), \(l\)]\)",
-	"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(13\), \(l\)]\)",
-	"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(23\), \(l\)]\)",
-	"\!\(\*SuperscriptBox[\(\[Delta]\), \(l\)]\)",
-	"\!\(\*SubsuperscriptBox[\(\[CapitalDelta]m\), \(21\), \(2\)]\)",
-	"\!\(\*SubsuperscriptBox[\(\[CapitalDelta]m\), \(31\), \(2\)]\)",
-	"\!\(\*SubscriptBox[\(y\), \(e\)]\)",
-	"\!\(\*SubscriptBox[\(y\), \(\[Mu]\)]\)",
-	"\!\(\*SubscriptBox[\(y\), \(\[Tau]\)]\)"
-};
-outlabelsQ={
-	"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(12\), \(q\)]\)",
-	"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(13\), \(q\)]\)",
-	"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(23\), \(q\)]\)",
-	"\!\(\*SuperscriptBox[\(\[Delta]\), \(q\)]\)",
-	"\!\(\*SubscriptBox[\(y\), \(u\)]\)",
-	"\!\(\*SubscriptBox[\(y\), \(c\)]\)",
-	"\!\(\*SubscriptBox[\(y\), \(t\)]\)",
-	"\!\(\*SubscriptBox[\(y\), \(d\)]\)",
-	"\!\(\*SubscriptBox[\(y\), \(s\)]\)",
-	"\!\(\*SubscriptBox[\(y\), \(b\)]\)"
-};
-outLabels=Join[outlabelsQ,outlabelsL];
+outLabels[sec_]:=Module[{q,l},
+	q={
+		"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(12\), \(q\)]\)",
+		"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(13\), \(q\)]\)",
+		"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(23\), \(q\)]\)",
+		"\!\(\*SuperscriptBox[\(\[Delta]\), \(q\)]\)",
+		"\!\(\*SubscriptBox[\(y\), \(u\)]\)",
+		"\!\(\*SubscriptBox[\(y\), \(c\)]\)",
+		"\!\(\*SubscriptBox[\(y\), \(t\)]\)",
+		"\!\(\*SubscriptBox[\(y\), \(d\)]\)",
+		"\!\(\*SubscriptBox[\(y\), \(s\)]\)",
+		"\!\(\*SubscriptBox[\(y\), \(b\)]\)"
+	};
+	l={
+		"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(12\), \(l\)]\)",
+		"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(13\), \(l\)]\)",
+		"\!\(\*SubsuperscriptBox[\(\[Theta]\), \(23\), \(l\)]\)",
+		"\!\(\*SuperscriptBox[\(\[Delta]\), \(l\)]\)",
+		"\!\(\*SubsuperscriptBox[\(\[CapitalDelta]m\), \(21\), \(2\)]\)",
+		"\!\(\*SubsuperscriptBox[\(\[CapitalDelta]m\), \(31\), \(2\)]\)",
+		"\!\(\*SubscriptBox[\(y\), \(e\)]\)",
+		"\!\(\*SubscriptBox[\(y\), \(\[Mu]\)]\)",
+		"\!\(\*SubscriptBox[\(y\), \(\[Tau]\)]\)"
+	};
+	Switch[sec,
+		"Q",q,
+		"L",l,
+		sec,Join[q,l]
+	]
+];
 
 findCredibilityLevel[grid_,level_]:=Module[{srtdata,cumsum,index},
 	srtdata=grid//Flatten//Sort;

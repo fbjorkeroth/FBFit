@@ -11,7 +11,6 @@ Begin["`Private`"];
 (* ::Function options:: *)
 
 Options[FBSetSeed]={"SeedSignFlip"->False,"SeedSmear"->False};
-Options[FBGetPhysicalParameters]={"Sector"->"All"};
 Options[FBMonteCarlo]={"Model"->"MSSM","ScaleMu"->1*^12,"TanB"->5.,"EtaB"->0.,"VaryAcceptance"->True,
 	"BurnIn"->0,"SigmaGetNew"->0.01,"SaveOutput"->True,"ThinningSaveFile"->1,"Sector"->"All"};
 
@@ -26,7 +25,6 @@ FBLoadModel[filename_]:=Module[{f=filename,path},
 	];
 	Return[0]
 ];
-
 
 FBSetSeed[seed_:Null,OptionsPattern[]]:=Module[{theta},
 	If[seed === Null, SeedRandom[], SeedRandom[seed]];

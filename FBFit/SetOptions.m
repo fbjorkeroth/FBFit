@@ -59,7 +59,7 @@ FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ss
 		"Sector"->sec,"ExcludeParameters"->ep}];
 
 	SetOptions[FBFit`Analysis`FBPrintInput,{"Model"->m,"TanB"->tb,"EtaB"->eb}];
-	SetOptions[FBFit`Analysis`FBPrintOutput,{"Model"->m,"TanB"->tb,"EtaB"->eb}];
+	SetOptions[FBFit`Analysis`FBPrintOutput,{"Model"->m,"TanB"->tb,"EtaB"->eb,"Sector"->sec}];
 	SetOptions[FBFit`Analysis`FBPlotPulls,{"Model"->m,"TanB"->tb,"EtaB"->eb}];
 
 	SetOptions[FBSetOptions,opts];
