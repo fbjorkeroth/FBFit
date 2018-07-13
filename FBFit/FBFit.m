@@ -63,7 +63,7 @@ FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,t
 		
 		If[RandomReal[]<alpha,{t,l}={tnew,lnew}]; (* Selects among old and new links *)
 		
-		If[OptionValue["VaryAcceptance"]==True,{sigma,meanAlpha}=updateSigma[sigma,meanAlpha,alpha,n]]; 
+		If[OptionValue["VaryAcceptance"]==True&&(0.001<sigma<0.1),{sigma,meanAlpha}=updateSigma[sigma,meanAlpha,alpha,n]]; 
 		If[n>b,
 			Sow[Flatten[{t,-2Log[l]}],"Data"];
 			Sow[alpha,"Alpha"]
