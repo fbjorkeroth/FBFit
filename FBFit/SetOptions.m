@@ -48,9 +48,10 @@ FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ss
 		};
 		
 	SetOptions[FBFit`FBSetSeed,{"SeedSignFlip"->ssf,"SeedSmear"->ss}];
-	SetOptions[FBFit`FBGetPhysicalParameters,{"Sector"->sec}];
 	SetOptions[FBFit`FBMonteCarlo,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb,"BurnIn"->bu,"VaryAcceptance"->va,
 		"SigmaGetNew"->sigma,"SaveOutput"->save,"ThinningSaveFile"->tsf,"Sector"->sec}];
+
+	SetOptions[FBFit`CalculateParameters`FBGetPhysicalParameters,{"Sector"->sec}];
 
 	SetOptions[FBFit`BestFitsAndErrors`FBLoadBestFitsAndErrors,{"Model"->m,"MSUSY"->ms,"ScaleMu"->scmu}];
 	SetOptions[FBFit`BestFitsAndErrors`FBGetDataBestFit,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb,"Sector"->sec}];

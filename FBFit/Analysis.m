@@ -46,8 +46,8 @@ isLepton = Global`IsLepton;
 
 (* ::Public functions:: *)
 
-FBImportFrom[runName_]:=Module[{rn=runName,dir},
-	dir=FileNameJoin@{NotebookDirectory[],"data",rn};
+FBImportFrom[runname_]:=Module[{dir},
+	dir=FileNameJoin@{NotebookDirectory[],"data",runname};
 	If[DirectoryQ[dir]==False,
 		Print["FBImportFrom: data directory ",dir," not found! Please select another run. Quitting kernel for safety.."];
 		Quit[]
@@ -56,18 +56,17 @@ FBImportFrom[runName_]:=Module[{rn=runName,dir},
 	Print["FBImportFrom: directory set to ",dir]
 ];
 
-FBExtractBestInput[inputdata_]:=Module[{data=inputdata,lRow,chisq,best},
-	lRow=Length[data[[1]]];
-	chisq=data[[;;,lRow]];
+FBExtractBestInput[inputdata_]:=Module[{chisq,best},
+	chisq=inputdata[[;;,-1]];
 	best=Position[chisq,Min[chisq]][[1,1]];
-	data[[best,;;-2]]
+	inputdata[[best,;;-2]]
 ];
 
-FBPrintInput[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,dataerrors,titles,chisq,table},
+FBPrintInput[t_,OptionsPattern[]]:=Module[{databestfit,dataerrors,titles,chisq,table},
 	databestfit=FBGetDataBestFit[];
 	dataerrors=FBGetDataErrors[];
 	titles={"Parameter","Value"};
-	chisq=FBChiSq[FBGetPulls[FBGetPhysicalParameters[theta],databestfit,dataerrors]];
+	chisq=FBChiSq[FBGetPulls[FBGetPhysicalParameters[t],databestfit,dataerrors]];
 	table=MatrixForm@Prepend[Transpose@{inLabels[[#]],t[[#]]},titles]&/@{isQuark,isLepton};
 	Print[
 		"\!\(\*SuperscriptBox[\(\[Chi]\), \(2\)]\): ",chisq,
@@ -75,7 +74,7 @@ FBPrintInput[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,dataerrors,ti
 	]
 ];
 
-FBPrintOutput[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,calc,titles,table,x},
+FBPrintOutput[t_,OptionsPattern[]]:=Module[{databestfit,calc,titles,table,x},
 	databestfit=FBGetDataBestFit[];
 	calc=FBGetPhysicalParameters[t];
 	titles={"Parameter","Data","Model"};
@@ -84,7 +83,7 @@ FBPrintOutput[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,calc,titles,
 	Print["Output: ",x]
 ];
 
-FBPlotPulls[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,dataerrors,calc,pulls},
+FBPlotPulls[t_,OptionsPattern[]]:=Module[{databestfit,dataerrors,calc,pulls},
 	databestfit=FBGetDataBestFit[];
 	dataerrors=FBGetDataErrors[];
 	calc=FBGetPhysicalParameters[t];
@@ -92,18 +91,18 @@ FBPlotPulls[theta_,OptionsPattern[]]:=Module[{t=theta,databestfit,dataerrors,cal
 	Print@BarChart[pulls,ChartLabels->outLabels,AxesLabel->"Pull",ImageSize->Large,AspectRatio->1/2,BaseStyle->FontSize->12]
 ];
 
-FBPhysicalParameterTable[inputdata_,variable_,OptionsPattern[]]:=Module[{data=inputdata,dataThinned,n=variable},
-	dataThinned=Take[data,{1,Length[data],OptionValue["Thinning"]}];
+FBPhysicalParameterTable[inputdata_,variable_,OptionsPattern[]]:=Module[{dataThinned,n=variable},
+	dataThinned=Take[inputdata,{1,Length[inputdata],OptionValue["Thinning"]}];
 	FBGetPhysicalParameters[#][[n]]&/@dataThinned[[;;,;;-2]]
 ];
 
 
-FBCredibleInterval[inputdata_,variable_,CIlevel_,OptionsPattern[]]:=Module[{data=inputdata,n=variable,level=CIlevel,l,mu,std,pdf,spacing,grid,t,plot,ci},
-	l=FBPhysicalParameterTable[data,n,"Thinning"->OptionValue["Thinning"]];
+FBCredibleInterval[inputdata_,n_,CIlevel_,OptionsPattern[]]:=Module[{l,mu,std,pdf,spacing,grid,t,plot,ci},
+	l=FBPhysicalParameterTable[inputdata,n,"Thinning"->OptionValue["Thinning"]];
 	{mu,std,pdf}=#[l]&/@{Mean,StandardDeviation,SmoothKernelDistribution};
 	spacing=10std/OptionValue["PixelDensity"];
 	grid=Table[PDF[pdf,{mu-OptionValue["SigmaSpan"] std+spacing*i}],{i,OptionValue["PixelDensity"]}];
-	t=findCredibilityLevel[grid,level];
+	t=findCredibilityLevel[grid,CIlevel];
 
 	plot=Plot[PDF[pdf,x]-t,{x,mu-std*OptionValue["SigmaSpan"],mu+std*OptionValue["SigmaSpan"]},
 		Mesh->{{0}},
@@ -120,10 +119,10 @@ FBCredibleInterval[inputdata_,variable_,CIlevel_,OptionsPattern[]]:=Module[{data
 	Return[]
 ];
 
-FBPlotHistogram[inputdata_,variable_,OptionsPattern[]]:=Module[{data=inputdata,n=variable,bf,err,p,bins,h,maxH,line},
+FBPlotHistogram[inputdata_,n_,OptionsPattern[]]:=Module[{bf,err,p,bins,h,maxH,line},
 	bf=FBGetDataBestFit[][[n]];
 	err=FBGetDataErrors[][[n]];
-	p=FBPhysicalParameterTable[data,n,"Thinning"->OptionValue["Thinning"]];
+	p=FBPhysicalParameterTable[inputdata,n,"Thinning"->OptionValue["Thinning"]];
 	{bins, h} = HistogramList[p,OptionValue["Bins"]];
 	maxH=Max[h];
 	line[x_]:=Line[{{x,0},{x,maxH+2}}];
@@ -133,8 +132,8 @@ FBPlotHistogram[inputdata_,variable_,OptionsPattern[]]:=Module[{data=inputdata,n
 	]
 ];
 
-FBChopDataFraction[inputdata_,bottomfraction_]:=Module[{data=inputdata,b=bottomfraction,n},
-	n=Round[(1-b)Length[data]];
+FBChopDataFraction[inputdata_,bottomfraction_]:=Module[{n},
+	n=Round[(1-bottomfraction)Length[inputdata]];
 	Take[data,-n]
 ];
 

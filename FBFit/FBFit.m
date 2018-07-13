@@ -4,7 +4,6 @@ BeginPackage["FBFit`",{"FBFit`CalculateParameters`","FBFit`BestFitsAndErrors`","
 
 FBLoadModel::usage="Initialises the Yukawa matrices and associated variables.";
 FBSetSeed::usage="Choose the seed input values for the MCMC.";
-FBGetPhysicalParameters::usage="Calculates the physical parameters (couplings, mixing angles) for a given input set.";
 FBMonteCarlo::usage="Runs a Monte Carlo chain of length nMCMC.";
 
 Begin["`Private`"];
@@ -15,21 +14,6 @@ Options[FBSetSeed]={"SeedSignFlip"->False,"SeedSmear"->False};
 Options[FBGetPhysicalParameters]={"Sector"->"All"};
 Options[FBMonteCarlo]={"Model"->"MSSM","ScaleMu"->1*^12,"TanB"->5.,"EtaB"->0.,"VaryAcceptance"->True,
 	"BurnIn"->0,"SigmaGetNew"->0.01,"SaveOutput"->True,"ThinningSaveFile"->1,"Sector"->"All"};
-
-(* ::Global variables:: *)
-
-Yu = Global`Yu;
-Yd = Global`Yd;
-Mnu = Global`Mnu;
-Ye = Global`Ye;
-
-inputVariables = Global`InputVariables;
-startBounds = Global`StartBounds;
-
-isReal = Global`IsReal;
-isPhase = Global`IsPhase;
-isQuark = Global`IsQuark;
-isLepton = Global`IsLepton;
 
 (* ::Public functions:: *)
 
@@ -44,25 +28,15 @@ FBLoadModel[filename_]:=Module[{f=filename,path},
 ];
 
 
-FBSetSeed[seed_:Null,OptionsPattern[]]:=Module[{theta,s=seed},
-	If[s === Null, SeedRandom[], SeedRandom[s]];
+FBSetSeed[seed_:Null,OptionsPattern[]]:=Module[{theta},
+	If[seed === Null, SeedRandom[], SeedRandom[seed]];
 	theta=N[RandomReal/@startBounds];
 	If[OptionValue["SeedSignFlip"],theta=flip[theta]];
 	If[OptionValue["SeedSmear"],theta=smear[theta]];
 	theta
 ];
 
-FBGetPhysicalParameters[theta_,OptionsPattern[]]:=Module[{thr,sec},
-	thr=Thread[inputVariables->theta];
-	sec=OptionValue["Sector"];
-	Switch[sec,
-		"Q",FBCalculateParameters[Yu,Yd,"Q"]/.thr,
-		"L",FBCalculateParameters[Mnu,Ye,"L"]/.thr,
-		sec,FBCalculateParameters[Yu,Yd,Mnu,Ye]/.thr
-	]
-];
-
-FBMonteCarlo[nMCMC0_,theta_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta,sigma,b,dbf,derr,time,l,r,tnew,lnew,alpha,meanAlpha=1.,rdata,ralpha,prog=0},
+FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,time,l,r,tnew,lnew,alpha,meanAlpha=1.,rdata,ralpha,prog=0},
 	Print["FBMonteCarlo: running fit.."];
 	
 	If[definedQ[OptionValue["Sector"]]==False,Print["FBMonteCarlo: global variables not defined! Quitting kernel for safety."];Quit[]];
@@ -77,20 +51,19 @@ FBMonteCarlo[nMCMC0_,theta_,OptionsPattern[]]:=Module[{nMCMC=nMCMC0,t=theta,sigm
 	l=likelihood[t,dbf,derr];
 	
 	Print[ProgressIndicator[Dynamic[prog/nMCMC]]];
-	r=Reap[Do[(* Calculates the new link in the MCMC chain. *)
-		tnew=getNewTheta[t,sigma]; (* Get input parameters for new link *)
+	r=Reap[Do[
+		tnew=getNewTheta[t,sigma];
 		lnew=likelihood[tnew,dbf,derr];
 		
 		alpha=Min[lnew/l,1]; (* Acceptance ratio *)
+		
 		If[RandomReal[]<alpha,{t,l}={tnew,lnew}]; (* Selects among old and new links *)
-
+		
 		If[OptionValue["VaryAcceptance"]==True,{sigma,meanAlpha}=updateSigma[sigma,meanAlpha,alpha,n]]; 
-		(* Functionality for progressively updating the Gaussian width. *)
-
 		If[n>b,
 			Sow[Flatten[{t,-2Log[l]}],"Data"];
 			Sow[alpha,"Alpha"]
-		]; (* Adds the link to the output chain *)
+		];
 		prog++
 	,{n,nMCMC}
 	],{"Data","Alpha"}];

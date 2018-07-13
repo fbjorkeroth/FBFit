@@ -5,12 +5,40 @@ BeginPackage["FBFit`CalculateParameters`",{"FBFit`MixingParameterTools`MPT3x3`"}
 (*FBCalculateParametersL::usage ="takes the neutrino mass matrix mnu and charged lepton Yukawa matrix Ye as input and calculates the mixing angles, phases, and masses.";
 FBCalculateParametersQ::usage ="takes the quark Yukawa matrices Yu, Yd as input and calculates the mixing angles, phase, and masses.";*)
 
+FBGetPhysicalParameters::usage="Calculates the physical parameters (couplings, mixing angles) for a given input set.";
 FBCalculateParameters::usage ="takes the neutrino mass matrix mnu and fermion Yukawa matrices Yu, Yd, and Ye as input and calculates the various mixing angles, phases, and masses.";
 FBGetPulls::usage="takes as input the result of running FBCalculateParameters and generates a list containing the pulls (i.e. deviation from best fit).";
 FBChiSq::usage="takes the sum of squares of pulls to give the final \!\(\*SuperscriptBox[\(\[Chi]\), \(2\)]\) value.";
 
 
 Begin["`Private`"];
+
+(* ::Global variables:: *)
+
+Yu = Global`Yu;
+Yd = Global`Yd;
+Mnu = Global`Mnu;
+Ye = Global`Ye;
+
+inputVariables = Global`InputVariables;
+startBounds = Global`StartBounds;
+
+isReal = Global`IsReal;
+isPhase = Global`IsPhase;
+isQuark = Global`IsQuark;
+isLepton = Global`IsLepton;
+
+(* ::Public functions:: *)
+
+FBGetPhysicalParameters[theta_,OptionsPattern[]]:=Module[{thr,sec},
+	thr=Thread[inputVariables->theta];
+	sec=OptionValue["Sector"];
+	Switch[sec,
+		"Q",FBCalculateParameters[Yu,Yd,"Q"]/.thr,
+		"L",FBCalculateParameters[Mnu,Ye,"L"]/.thr,
+		sec,FBCalculateParameters[Yu,Yd,Mnu,Ye]/.thr
+	]
+];
 
 FBCalculateParameters[Yu_?MPTNumericMatrixQ,Yd_?MPTNumericMatrixQ,mnu_?MPTNumericMatrixQ,Ye_?MPTNumericMatrixQ]:=Flatten@Join[
 	calculateParametersQ[Yu,Yd],
