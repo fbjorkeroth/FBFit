@@ -19,13 +19,17 @@ FBChopDataFraction::usage="Chops off the first Nth fraction of rows in a data se
 
 Begin["Private`"];
 
+(* ::Global variables:: *)
+
+inLabels = Global`InLabels;
+
 (* ::Function options:: *)
 
 Options[FBPrintInput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.};
 Options[FBPrintOutput]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"Sector"->"All"};
-Options[FBPlotPulls]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.};
+Options[FBPlotPulls]={"Model"->"MSSM","TanB"->5.,"EtaB"->0.,"Sector"->"All"};
 
-Options[FBPhysicalParameterTable]={"Thinning"->1,"Sector"->"All"};
+Options[FBPhysicalParameterTable]={"Thinning"->1};
 Options[FBCredibleInterval]={"Thinning"->1,"SigmaSpan"->3,"PixelDensity"->100,"Plot"->True};
 Options[FBPlotHistogram]={"Thinning"->1,"ImageSize"->300,"Bins"->30};
 
@@ -78,7 +82,7 @@ FBPlotPulls[t_,OptionsPattern[]]:=Module[{databestfit,dataerrors,calc,pulls},
 	dataerrors=FBGetDataErrors[];
 	calc=FBGetPhysicalParameters[t];
 	pulls=FBGetPulls[calc,databestfit,dataerrors];
-	Print@BarChart[pulls,ChartLabels->outLabels,AxesLabel->"Pull",ImageSize->Large,AspectRatio->1/2,BaseStyle->FontSize->12]
+	Print@BarChart[pulls,ChartLabels->outLabels[OptionValue["Sector"]],AxesLabel->"Pull",ImageSize->Large,AspectRatio->1/2,BaseStyle->FontSize->12]
 ];
 
 FBPhysicalParameterTable[inputdata_,variable_,OptionsPattern[]]:=Module[{dataThinned,n=variable},
@@ -124,7 +128,7 @@ FBPlotHistogram[inputdata_,n_,OptionsPattern[]]:=Module[{bf,err,p,bins,h,maxH,li
 
 FBChopDataFraction[inputdata_,bottomfraction_]:=Module[{n},
 	n=Round[(1-bottomfraction)Length[inputdata]];
-	Take[data,-n]
+	Take[inputdata,-n]
 ];
 
 
