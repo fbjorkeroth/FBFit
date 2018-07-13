@@ -17,7 +17,7 @@ isPhase = Global`IsPhase;
 (* ::Function options:: *)
 
 Options[FBSetSeed]={"SeedSignFlip"->False,"SeedSmear"->False};
-Options[FBMonteCarlo]={"Model"->"MSSM","ScaleMu"->1*^12,"TanB"->5.,"EtaB"->0.,"VaryAcceptance"->True,
+Options[FBMonteCarlo]={"Model"->"MSSM","ScaleMu"->1*^12,"TanB"->5.,"EtaB"->0.,"VarySigma"->False,
 	"BurnIn"->0,"SigmaGetNew"->0.01,"SaveOutput"->True,"ThinningSaveFile"->1,"Sector"->"All"};
 
 (* ::Public functions:: *)
@@ -63,7 +63,7 @@ FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,t
 		
 		If[RandomReal[]<alpha,{t,l}={tnew,lnew}]; (* Selects among old and new links *)
 		
-		If[OptionValue["VaryAcceptance"]==True&&(0.001<sigma<0.1),{sigma,meanAlpha}=updateSigma[sigma,meanAlpha,alpha,n]]; 
+		If[OptionValue["VarySigma"],{sigma,meanAlpha}=updateSigma[sigma,meanAlpha,alpha,n]]; 
 		If[n>b,
 			Sow[Flatten[{t,-2Log[l]}],"Data"];
 			Sow[alpha,"Alpha"];
@@ -81,7 +81,7 @@ FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,t
 	If[OptionValue["SaveOutput"],
 		Export["rundata.txt",rdata[[;;;;OptionValue["ThinningSaveFile"]]],"Table"];
 		Export["acceptance.log",ralpha[[;;;;OptionValue["ThinningSaveFile"]]],"List"];
-		Export["sigma.log",rsigma[[;;;;OptionValue["ThinningSaveFile"]]],"List"];
+		If[OptionValue["VarySigma"],Export["sigma.log",rsigma[[;;;;OptionValue["ThinningSaveFile"]]],"List"]];
 		Export["time.log",ToString@time,"Text"]
 	];
 	Print["FBMonteCarlo: fit complete!"];
@@ -134,8 +134,8 @@ updateSigma[sigma_,meanalpha_,alpha_,n_]:=Module[{newmean},
 	newmean=(n-1)meanalpha/n+alpha/n;
 	Return[{
 	Which[
-		newmean<0.3,0.99sigma,
-		newmean>0.5,1.01sigma,
+		newmean<0.3,0.999sigma,
+		newmean>0.5,1.001sigma,
 		0.3<=newmean<=0.5,sigma
 	],
 	newmean

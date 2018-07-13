@@ -1056,7 +1056,7 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  InterpretationBox[Cell[
-  "\"VaryAcceptance\"", "ExampleSubsection",ExpressionUUID->
+  "\"VarySigma\"", "ExampleSubsection",ExpressionUUID->
    "7a7cf88e-4f1f-4390-bb25-d50ac99afc1b"],
   $Line = 0; Null]], "ExampleSubsection",
  CellID->1848688994,ExpressionUUID->"75862c6e-ae99-4258-9a02-340872f651ad"],
