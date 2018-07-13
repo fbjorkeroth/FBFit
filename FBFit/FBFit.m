@@ -40,7 +40,7 @@ FBSetSeed[seed_:Null,OptionsPattern[]]:=Module[{theta},
 	theta
 ];
 
-FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,time,l,r,tnew,lnew,alpha,meanAlpha=1.,rdata,ralpha,prog=0},
+FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,time,l,r,tnew,lnew,alpha,meanAlpha=1.,rdata,ralpha,rsigma,prog=0},
 	Print["FBMonteCarlo: running fit.."];
 	
 	If[definedQ[OptionValue["Sector"]]==False,Print["FBMonteCarlo: global variables not defined! Quitting kernel for safety."];Quit[]];
@@ -66,19 +66,22 @@ FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,t
 		If[OptionValue["VaryAcceptance"]==True&&(0.001<sigma<0.1),{sigma,meanAlpha}=updateSigma[sigma,meanAlpha,alpha,n]]; 
 		If[n>b,
 			Sow[Flatten[{t,-2Log[l]}],"Data"];
-			Sow[alpha,"Alpha"]
+			Sow[alpha,"Alpha"];
+			Sow[sigma,"Sigma"]
 		];
 		prog++
 	,{n,nMCMC}
-	],{"Data","Alpha"}];
+	],{"Data","Alpha","Sigma"}];
 
 	rdata = r[[2,1,1]];
 	ralpha = r[[2,2,1]];
+	rsigma = r[[2,3,1]];
 	
 	time=DateDifference[time, Now, {"Hour", "Minute"}];
 	If[OptionValue["SaveOutput"],
 		Export["rundata.txt",rdata[[;;;;OptionValue["ThinningSaveFile"]]],"Table"];
 		Export["acceptance.log",ralpha[[;;;;OptionValue["ThinningSaveFile"]]],"List"];
+		Export["sigma.log",rsigma[[;;;;OptionValue["ThinningSaveFile"]]],"List"];
 		Export["time.log",ToString@time,"Text"]
 	];
 	Print["FBMonteCarlo: fit complete!"];
@@ -124,8 +127,8 @@ getNewTheta[theta_,sigma_,fixlist_:{}]:=Module[{tnew,select},
 	MapAt[findPhase[#,sigma]&,tnew,{#}&/@select[isPhase]] (* Updates phase parameters *)
 ];
 
-findYukawa[t_,sigma_,floor_:10^-7]:=RandomVariate[NormalDistribution[t,Max[Abs[sigma t],floor]]];
-findPhase[t_,sigma_]:=Mod[RandomVariate[NormalDistribution[t,sigma]],2\[Pi]];
+findYukawa[t_,sigma_,floor_:10^-6]:=RandomVariate[NormalDistribution[t,Max[Abs[sigma t],floor]]];
+findPhase[t_,sigma_]:=Mod[RandomVariate[NormalDistribution[t,sigma]],2 Pi];
 
 updateSigma[sigma_,meanalpha_,alpha_,n_]:=Module[{newmean},
 	newmean=(n-1)meanalpha/n+alpha/n;
