@@ -53,7 +53,7 @@ printBadModel[]:=Module[{},Print["Model not supported. Quitting kernel for safet
 
 loadBestFitsAndErrorsSM[mu_]:=Module[{vHiggs=174},
 	(* Lepton data from NuFit 3.2 *)
-	{theta12q,theta13q,theta23q,deltaq}={13.026,3.8*^-3,4.4*^-2,69.215};(* Cabibbo angle and CP phase *)
+	{theta12q,theta13q,theta23q,deltaq}={13.026,3.8*^-3/Degree,4.4*^-2/Degree,69.215};(* Cabibbo angle and CP phase *)
 	{yu,yc,yt}={0.58*^-3,0.281,86.7}/vHiggs;
 	{yd,ys,yb}={1.34*^-3,26.*^-3,1.21}/vHiggs;
 		
