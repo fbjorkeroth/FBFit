@@ -40,7 +40,7 @@ FBSetSeed[seed_:Null,OptionsPattern[]]:=Module[{theta},
 	theta
 ];
 
-FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,time,l,r,tnew,lnew,alpha,meanAlpha=1.,rdata,ralpha,rsigma,prog=0},
+FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,time,ch,r,tnew,chnew,alpha,meanAlpha=1.,rdata,ralpha,rsigma,prog=0},
 	Print["FBMonteCarlo: running fit.."];
 	
 	If[definedQ[OptionValue["Sector"]]==False,Print["FBMonteCarlo: global variables not defined! Quitting kernel for safety."];Quit[]];
@@ -52,20 +52,20 @@ FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,t
 	derr=FBGetDataErrors[];
 	
 	time=Now;
-	l=likelihood[t,dbf,derr];
+	ch=chisq[t,dbf,derr];
 	
 	Print[ProgressIndicator[Dynamic[N[prog/nMCMC]]]];
 	r=Reap[Do[
 		tnew=getNewTheta[t,sigma];
-		lnew=likelihood[tnew,dbf,derr];
+		chnew=chisq[tnew,dbf,derr];
 		
-		alpha=Min[lnew/l,1]; (* Acceptance ratio *)
+		alpha=calcAlpha[ch,chnew]; (* Acceptance ratio *)
 		
-		If[RandomReal[]<alpha,{t,l}={tnew,lnew}]; (* Selects among old and new links *)
+		If[RandomReal[]<alpha,{t,ch}={tnew,chnew}]; (* Selects among old and new links *)
 		
 		If[OptionValue["VarySigma"],{sigma,meanAlpha}=updateSigma[sigma,meanAlpha,alpha,n]]; 
 		If[n>b,
-			Sow[Flatten[{t,-2Log[l]}],"Data"];
+			Sow[Flatten[{t,ch}],"Data"];
 			Sow[alpha,"Alpha"];
 			Sow[sigma,"Sigma"]
 		];
@@ -108,6 +108,17 @@ likelihood[theta_,databestfit_,dataerrors_]:=Module[{ca,pu,chi2},
 	pu=FBGetPulls[ca,databestfit,dataerrors];
 	chi2=FBChiSq[pu];
 	Exp[-chi2/2]
+];
+
+chisq[theta_,databestfit_,dataerrors_]:=Module[{ca,pu},
+	ca=FBGetPhysicalParameters[theta];
+	pu=FBGetPulls[ca,databestfit,dataerrors];
+	FBChiSq[pu]
+];
+
+calcAlpha[ch_,chnew_,cutoff_:500.0]:=Module[{diff},
+	diff=chnew-ch;
+	If[diff>cutoff,0.,Min[Exp[-0.5diff],1]]
 ];
 
 checkBurnIn[burnin_,n_]:=If[burnin>n,

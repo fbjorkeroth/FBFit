@@ -6,13 +6,13 @@
 
 Get["FBFit`"];
 
-FBLoadModel["models/C8.m"];
-nMCMC=50000;
+FBLoadModel["models/model.m"];
+nMCMC=10000;
 FBSetOptions[
 	"Model"->"SM",
 	"SaveOutput"->True,
 	"ThinningSaveFile"->1,
-	"BurnIn"->10000,
+	"BurnIn"->1000,
 	"Sector"->"Q"
 ];
 FBLoadBestFitsAndErrors[];

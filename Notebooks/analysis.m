@@ -15,7 +15,6 @@ FBImportFrom["test"];
 
 likelihoodTable=Import["rundata.txt","Table"];
 acceptanceList=Import["acceptance.log","List"];
-sigmaList=Import["sigma.log","List"];
 options=Import["variables.mx"];
 
 FBSetOptions@@options;
@@ -30,7 +29,7 @@ FBLoadBestFitsAndErrors[];
 (*Adjust data table*)
 
 
-likelihoodTable=FBChopDataFraction[likelihoodTable,0.25];
+(*likelihoodTable=FBChopDataFraction[likelihoodTable,0.25];*)
 
 
 (* ::Subsection:: *)
@@ -56,27 +55,26 @@ FBPlotPulls[thetaBest];
 (*Reconstruct matrices*)
 
 
-yun=Yu/.Thread[InputVariables->thetaBest];
+(*yun=Yu/.Thread[InputVariables->thetaBest];
 yun//MatrixForm
 ydn=Yd/.Thread[InputVariables->thetaBest];
-ydn//MatrixForm
-
+ydn//MatrixForm*)
 
 (*Quiet@Needs["MixingParameterTools`MPT3x3`"];*)
-CKMParameters[yun,DiagonalMatrix@{1,2,3}][[1]]
+(*CKMParameters[yun,DiagonalMatrix@{1,2,3}][[1]]
 CKMParameters[ydn,DiagonalMatrix@{1,2,3}][[1]]
-CKMParameters[yun,ydn][[1]]
+CKMParameters[yun,ydn][[1]]*)
 
 
 (* ::Subsection:: *)
 (*Evolution of links (\[Alpha], \[Sigma])*)
 
 
-range=1000;
+(*range=1000;
 ma=ListLogLinearPlot[Table[Mean[acceptanceList[[;;n]]],{n,range}],GridLines->{{},{0.3,0.5}},PlotRange->All,Joined->True];
 si=ListLogLinearPlot[40sigmaList,PlotRange->{{1,range},All},PlotStyle->Orange];
 ac=ListLogLinearPlot[acceptanceList,PlotRange->{{1,range},All}];
-Show[{ma,si}]
+Show[{ma,si}]*)
 
 
 (* ::Subsection:: *)
