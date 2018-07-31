@@ -122,7 +122,8 @@ FBPlotHistogram[inputdata_,n_,OptionsPattern[]]:=Module[{bf,err,p,bins,h,maxH,li
 	line[x_]:=Line[{{x,0},{x,maxH+2}}];
 	Histogram[
 		p,{bins},h&,
-		Epilog->{line[bf],{Dashed,line[bf+err]},{Dashed,line[bf-err]}}
+		Epilog->{line[bf],{Dashed,line[bf+err]},{Dashed,line[bf-err]}},
+		ImageSize -> OptionValue["ImageSize"]
 	]
 ];
 
