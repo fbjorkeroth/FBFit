@@ -78,7 +78,7 @@ loadBestFitsAndErrorsSM[mu_]:=Module[{vHiggs=174},
 		{dm21,dm31}={7.40*^-5,2.494*^-3};
 		{ye,ymu,ytau}={4.90856087*^-4,0.103622931,1.76167}/vHiggs;
 
-		{errtheta12q,errtheta13q,errtheta23q,errdeltaq}={0.00072,0.13*^-3,0.064*^-2,0.054};
+		{errtheta12q,errtheta13q,errtheta23q,errdeltaq}={0.00072,0.13*^-3,0.064*^-2,0.054}/Degree;
 		{erryu,erryc,erryt}={3.0*^-6,0.11*^-3,0.0086};
 		{erryd,errys,erryb}={0.23*^-5,0.17*^-4,0.015*^-2};
 		
