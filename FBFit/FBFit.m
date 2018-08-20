@@ -18,7 +18,7 @@ isPhase = Global`IsPhase;
 
 Options[FBSetSeed]={"SeedSignFlip"->False,"SeedSmear"->False};
 Options[FBMonteCarlo]={"Model"->"MSSM","ScaleMu"->1*^12,"TanB"->5.,"EtaB"->0.,"VarySigma"->False,
-	"BurnIn"->0,"SigmaGetNew"->0.01,"SaveOutput"->True,"ThinningSaveFile"->1,"Sector"->"All"};
+	"BurnIn"->0,"SigmaGetNew"->0.01,"SaveOutput"->True,"ThinningSaveFile"->1,"Sector"->"All","MinAcceptance"->0};
 
 (* ::Public functions:: *)
 
@@ -61,7 +61,7 @@ FBMonteCarlo[nMCMC_,theta_,OptionsPattern[]]:=Module[{t=theta,sigma,b,dbf,derr,t
 		
 		alpha=calcAlpha[ch,chnew]; (* Acceptance ratio *)
 		
-		If[RandomReal[]<alpha,{t,ch}={tnew,chnew}]; (* Selects among old and new links *)
+		If[RandomReal[{OptionValue["MinAcceptance"],1}]<alpha,{t,ch}={tnew,chnew}]; (* Selects among old and new links *)
 		
 		If[OptionValue["VarySigma"],{sigma,meanAlpha}=updateSigma[sigma,meanAlpha,alpha,n]]; 
 		If[n>b,

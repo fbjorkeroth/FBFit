@@ -23,13 +23,14 @@ Options[FBSetOptions]={
 	"SeedSmear"->False,
 	"SigmaGetNew"->0.01,
 	"ThinningSaveFile"->1,
-	"Sector"->"All"
+	"Sector"->"All",
+	"MinAcceptance"->0
 };
 
 (* ::Public functions:: *)
 
-FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf,sec},
-	{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf,sec}=OptionValue[#]&/@{
+FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf,sec,mac},
+	{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf,sec,mac}=OptionValue[#]&/@{
 		"SaveOutput",
 		"Analysis",
 		"Model",
@@ -44,12 +45,13 @@ FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ss
 		"SeedSmear",
 		"SigmaGetNew",
 		"ThinningSaveFile",
-		"Sector"
+		"Sector",
+		"MinAcceptance"
 		};
 		
 	SetOptions[FBFit`FBSetSeed,{"SeedSignFlip"->ssf,"SeedSmear"->ss}];
 	SetOptions[FBFit`FBMonteCarlo,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb,"BurnIn"->bu,"VarySigma"->va,
-		"SigmaGetNew"->sigma,"SaveOutput"->save,"ThinningSaveFile"->tsf,"Sector"->sec}];
+		"SigmaGetNew"->sigma,"SaveOutput"->save,"ThinningSaveFile"->tsf,"Sector"->sec,"MinAcceptance"->mac}];
 
 	SetOptions[FBFit`CalculateParameters`FBGetPhysicalParameters,{"Sector"->sec}];
 
