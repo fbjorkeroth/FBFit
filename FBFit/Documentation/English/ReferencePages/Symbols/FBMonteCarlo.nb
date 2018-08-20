@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     21596,        542]
-NotebookOptionsPosition[     14748,        398]
-NotebookOutlinePosition[     15432,        423]
-CellTagsIndexPosition[     15353,        418]
+NotebookDataLength[     21880,        546]
+NotebookOptionsPosition[     15032,        402]
+NotebookOutlinePosition[     15716,        427]
+CellTagsIndexPosition[     15637,        422]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -306,58 +306,62 @@ Cell[TextData[{
 
 Cell[BoxData[GridBox[{
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "8916fead-a901-44cb-a8ad-41d4372f955d"], "\"\<Model\>\"", "\"\<MSSM\>\"",
+     "f8a48ba5-eec6-4414-b395-3c5b0aa89dfc"], "\"\<Model\>\"", "\"\<MSSM\>\"",
      Cell["Which low-scale model to match to. Choices: are SM or MSSM.", 
-     "TableText",ExpressionUUID->"f5518084-3e2f-4e22-9add-df1bde0482c1"]},
+     "TableText",ExpressionUUID->"b57c53c3-1b66-4555-9eee-d5caed107bf3"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "12d979dc-3903-4012-801f-f29dc9de7c4d"], "\"\<ScaleMu\>\"", 
+     "318d43ce-0c10-4c4d-8c2f-053cbbe6bfea"], "\"\<ScaleMu\>\"", 
     "1000000000000", Cell[
     "Matching scale for the SM.", "TableText",ExpressionUUID->
-     "57c464e2-3af1-4dea-8203-79c0f0988405"]},
+     "ff2f2064-c1ac-4e40-8090-3b71603a34aa"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "5e8447b1-8762-4df5-a0a3-3dfce2d4a76c"], "\"\<TanB\>\"", "5.", Cell[
+     "32ac3089-f936-46ae-843b-de3f1cdd898a"], "\"\<TanB\>\"", "5.", Cell[
     "Value of tan \[Beta] in the MSSM.", "TableText",ExpressionUUID->
-     "ae58a6d6-0919-4127-b3a3-359b42fb76a8"]},
+     "9f0627b8-57e3-49fb-a2cd-dfb7639f2163"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "0a46e7ba-352e-4e47-b871-d29fe7b26992"], "\"\<EtaB\>\"", "0.", Cell[
+     "0b432aec-bca0-4aa4-8b5f-8b43c945124d"], "\"\<EtaB\>\"", "0.", Cell[
     "Value of threshold corrections in the MSSM.", "TableText",
-     ExpressionUUID->"13c645fd-e019-45df-90e9-6e4af7fe388e"]},
+     ExpressionUUID->"0f127147-dfdd-422a-8055-1c4223c62a88"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "8b3f129e-f97d-48dc-af3f-5b4de5c9bc42"], "\"\<VarySigma\>\"", 
+     "a2335e82-9e10-4c01-b0f1-253faae34035"], "\"\<VarySigma\>\"", 
     ButtonBox["False",
      BaseStyle->"Link"], Cell["\<\
 Whether to vary the distribution from which new \[Theta] are selected to \
 ensure a steady acceptance rate.\
-\>", "TableText",ExpressionUUID->"978158f4-e4ce-4148-8db1-005573b12615"]},
+\>", "TableText",ExpressionUUID->"33ef1f8e-d47f-4b90-93ef-24ee63e64722"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "f39bd0f1-105a-4c8e-8090-550bd120a364"], "\"\<BurnIn\>\"", "0", Cell[
+     "9c9e61cc-7ebe-41af-a4d7-849499d398e6"], "\"\<BurnIn\>\"", "0", Cell[
     "How many of the first links in the MCMC chain to discard.", "TableText",
-     ExpressionUUID->"704bdf03-b52b-452a-92e5-df2f5cf55881"]},
+     ExpressionUUID->"004e4c6a-1b18-4076-b007-6bd43fad87ae"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "49f8eca9-9bf2-4edd-8860-0210b6fb28cd"], "\"\<SigmaGetNew\>\"", "0.01", 
+     "eea1ece4-846c-4f62-b7ab-0659234e3fe0"], "\"\<SigmaGetNew\>\"", "0.01", 
     Cell["Width of the distribution from which new \[Theta] are selected.", 
-     "TableText",ExpressionUUID->"54b61ec4-bf16-458e-a79b-0b39283c0c3a"]},
+     "TableText",ExpressionUUID->"aa75d44c-a461-4a58-bd82-8be10d309aad"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "85f8b7ae-2f13-4268-bac7-3a752b09100d"], "\"\<SaveOutput\>\"", 
+     "30a3056f-239d-412e-9b7b-da2941961147"], "\"\<SaveOutput\>\"", 
     ButtonBox["True",
      BaseStyle->"Link"], Cell[
     "Whether to save output to file.", "TableText",ExpressionUUID->
-     "86ed4424-303b-4592-ba2c-716f14a14cdc"]},
+     "61403ecc-efae-4176-be6f-7666a35a9bf8"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "24c09ccf-c70f-4e20-9061-4a5d9e494645"], "\"\<ThinningSaveFile\>\"", "1",
+     "923c9baf-279f-4c44-9294-d9d038c1f3fd"], "\"\<ThinningSaveFile\>\"", "1",
      Cell["Export 1/N links when saving, to reduce file size.", "TableText",
-     ExpressionUUID->"05991e71-2e5b-4d88-99a4-f8f40192dd47"]},
+     ExpressionUUID->"e14d48c4-54e5-4846-91e0-81971435deae"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "493ed5fa-8539-4f99-8366-623945ee214d"], "\"\<Sector\>\"", "\"\<All\>\"",
+     "96f0bbd9-2fad-4513-999e-cfc2da70f7ef"], "\"\<Sector\>\"", "\"\<All\>\"",
      Cell["Specify sector (quark or lepton)", "TableText",ExpressionUUID->
-     "be98be5d-cbf5-4a62-ab68-c930b2d84e80"]}
+     "49b4adb9-752d-4dc9-bca4-db5ea02106d5"]},
+   {Cell["      ", "ModInfo",ExpressionUUID->
+     "e6db9869-206e-4eb7-82e3-945e4304aa76"], "\"\<MinAcceptance\>\"", "0", 
+    Cell["Minimum acceptance ratio", "TableText",ExpressionUUID->
+     "fa8b7995-783f-401a-9130-0c472ec1f8fb"]}
   }]], "3ColumnTableMod",
  CellChangeTimes->{{3.7402161651049013`*^9, 3.740216238694222*^9}, {
    3.740404530993514*^9, 3.740404549669078*^9}, {3.74040460980483*^9, 
    3.7404046098048677`*^9}, 3.740404804118484*^9, 3.740461222651308*^9, {
    3.740490648049395*^9, 3.7404906497025957`*^9}, {3.7437596999707336`*^9, 
-   3.743759728232499*^9}},
- CellID->781296364,ExpressionUUID->"99b798cb-d43a-4664-b885-219b5f720fa7"]
+   3.743759728232499*^9}, {3.7437617840993567`*^9, 3.743761814715201*^9}},
+ CellID->781296364,ExpressionUUID->"54175b78-ed40-43df-b72a-e118eb1efe69"]
 }, Open  ]],
 
 Cell[BoxData[
@@ -417,7 +421,7 @@ CellTagsIndex->{
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"ExtendedExamples", 15160, 411}
+ {"ExtendedExamples", 15444, 415}
  }
 *)
 (*NotebookFileOutline
@@ -530,18 +534,18 @@ Cell[9441, 282, 244, 5, 21, "ExampleSection",ExpressionUUID->"76e1b303-4bdc-47af
  CellID->1309478203],
 Cell[9688, 289, 614, 15, 41, "ExampleText",ExpressionUUID->"e467b34a-500e-490a-a5b0-ffd244d07187",
  CellID->1118693643],
-Cell[10305, 306, 3135, 53, 293, "3ColumnTableMod",ExpressionUUID->"99b798cb-d43a-4664-b885-219b5f720fa7",
+Cell[10305, 306, 3419, 57, 311, "3ColumnTableMod",ExpressionUUID->"54175b78-ed40-43df-b72a-e118eb1efe69",
  CellID->781296364]
 }, Open  ]],
-Cell[13455, 362, 248, 5, 33, "ExampleSection",ExpressionUUID->"71ebb981-f2a4-4b4c-9957-af34c4aa8947",
+Cell[13739, 366, 248, 5, 33, "ExampleSection",ExpressionUUID->"71ebb981-f2a4-4b4c-9957-af34c4aa8947",
  CellID->258228157],
-Cell[13706, 369, 259, 5, 21, "ExampleSection",ExpressionUUID->"87c69d39-e10e-4901-abce-b3b1fde44d5a",
+Cell[13990, 373, 259, 5, 21, "ExampleSection",ExpressionUUID->"87c69d39-e10e-4901-abce-b3b1fde44d5a",
  CellID->2123667759],
-Cell[13968, 376, 252, 5, 21, "ExampleSection",ExpressionUUID->"51574545-8101-4d6b-8394-769a5ff867c7",
+Cell[14252, 380, 252, 5, 21, "ExampleSection",ExpressionUUID->"51574545-8101-4d6b-8394-769a5ff867c7",
  CellID->1305812373],
-Cell[14223, 383, 257, 5, 21, "ExampleSection",ExpressionUUID->"5640c16b-df1a-478d-b56a-120bf7c53dcb",
+Cell[14507, 387, 257, 5, 21, "ExampleSection",ExpressionUUID->"5640c16b-df1a-478d-b56a-120bf7c53dcb",
  CellID->1653164318],
-Cell[14483, 390, 249, 5, 21, "ExampleSection",ExpressionUUID->"9c5f9ec6-f9cc-4704-9c64-70dc08bc6cf0",
+Cell[14767, 394, 249, 5, 21, "ExampleSection",ExpressionUUID->"9c5f9ec6-f9cc-4704-9c64-70dc08bc6cf0",
  CellID->589267740]
 }, Open  ]]
 }
