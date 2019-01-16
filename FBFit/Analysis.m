@@ -109,7 +109,7 @@ FBCredibleInterval[inputdata_,n_,CIlevel_,OptionsPattern[]]:=Module[{l,mu,std,pd
 	ci=Sort@Cases[Normal@plot,Point[{x_,y_}]->x,Infinity];
 
 	If[OptionValue["Plot"]==True,Print[plot]];
-	Print[StringJoin["n = ",ToString[n],"; ",ToString[100level//Round],"% CI: ",ToString[ci]]];
+	Print[StringJoin["n = ",ToString[n],"; ",ToString[100CIlevel//Round],"% CI: ",ToString[ci]]];
 	Return[]
 ];
 
