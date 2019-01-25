@@ -51,39 +51,54 @@ FBGetDataErrors[OptionsPattern[]]:=Module[{model,sec,err},
 
 printBadModel[]:=Module[{},Print["Model not supported. Quitting kernel for safety.."];Quit[]];
 
-loadBestFitsAndErrorsSM[mu_]:=Module[{vHiggs=174},
-	(* Lepton data from NuFit 3.2 *)
+loadBestFitsAndErrorsSM[mu_,ordering_]:=Module[{vHiggs=174},
 	{theta12q,theta13q,theta23q,deltaq}={13.026,3.8*^-3/Degree,4.4*^-2/Degree,69.215};(* Cabibbo angle and CP phase *)
-	{yu,yc,yt}={0.58*^-3,0.281,86.7}/vHiggs;
-	{yd,ys,yb}={1.34*^-3,26.*^-3,1.21}/vHiggs;
-		
-	{theta12l,theta13l,theta23l,deltal}={33.62,8.54,47.2,234};
-	{dm21,dm31}={7.40*^-5,2.494*^-3};
-	{ye,ymu,ytau}={4.90856087*^-4,0.103622931,1.76167}/vHiggs;
-
 	{errtheta12q,errtheta13q,errtheta23q,errdeltaq}={0.041,0.036 theta13q,0.016 theta23q,3.095};
+
+	{yu,yc,yt}={0.58*^-3,0.281,86.7}/vHiggs;
 	{erryu,erryc,erryt}={0.24*^-3,0.042,4.0}/vHiggs;
+
+	{yd,ys,yb}={1.34*^-3,26.*^-3,1.21}/vHiggs;
 	{erryd,errys,erryb}={6.0*^-4,8*^-3,0.05}/vHiggs;
-		
-	{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.15,3.9,43};
-	{errdm21,errdm31}={0.21*^-5,0.033*^-3};
+
+	{ye,ymu,ytau}={4.90856087*^-4,0.103622931,1.76167}/vHiggs;
 	{errye,errymu,errytau}=0.006{ye,ymu,ytau};
+
+(*	(* Lepton data from NuFit 3.2 *)
+	{theta12l,theta13l,theta23l,deltal}={33.62,8.54,47.2,234};
+	{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.15,3.9,43};
+	
+	{dm21,dm31}={7.40*^-5,2.494*^-3};
+	{errdm21,errdm31}={0.21*^-5,0.033*^-3};*)	
+
+	(* Data from NuFit 4.0 *)
+	Switch[ordering,
+		"normal",
+			{theta12l,theta13l,theta23l,deltal}={33.82,8.61,49.7,217};
+			{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.13,1.1,40};
+
+			{dm21,dm31}={7.39*^-5,2.525*^-3};
+			{errdm21,errdm31}={0.21*^-5,0.033*^-3};
+		,
+		"inverted",
+			{theta12l,theta13l,theta23l,deltal}={33.82,8.65,49.7,280};
+			{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.13,1.0,28};
+							
+			{dm21,dm31}={7.39*^-5,-2.512*^-3};
+			{errdm21,errdm31}={0.21*^-5,0.034*^-3};
+	];
 	
 	If[mu=="MZ",
 		{theta12q,theta13q,theta23q,deltaq}={0.22735,3.64*^-3,4.208*^-2,1.208}/Degree;(* Cabibbo angle and CP phase *)
-		{yu,yc,yt}={7.4*^-6,3.60*^-3,0.9861};
-		{yd,ys,yb}={1.58*^-5,3.12*^-4,1.639*^-2};
-		
-		{theta12l,theta13l,theta23l,deltal}={33.62,8.54,47.2,234};
-		{dm21,dm31}={7.40*^-5,2.494*^-3};
-		{ye,ymu,ytau}={4.90856087*^-4,0.103622931,1.76167}/vHiggs;
-
 		{errtheta12q,errtheta13q,errtheta23q,errdeltaq}={0.00072,0.13*^-3,0.064*^-2,0.054}/Degree;
+
+		{yu,yc,yt}={7.4*^-6,3.60*^-3,0.9861};
 		{erryu,erryc,erryt}={3.0*^-6,0.11*^-3,0.0086};
+
+		{yd,ys,yb}={1.58*^-5,3.12*^-4,1.639*^-2};
 		{erryd,errys,erryb}={0.23*^-5,0.17*^-4,0.015*^-2};
-		
-		{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.15,3.9,43};
-		{errdm21,errdm31}={0.21*^-5,0.033*^-3};
+
+		{ye,ymu,ytau}={4.90856087*^-4,0.103622931,1.76167}/vHiggs;
 		{errye,errymu,errytau}=0.006{ye,ymu,ytau};
 	];
 	Return[0];
