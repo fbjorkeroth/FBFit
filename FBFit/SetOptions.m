@@ -11,7 +11,7 @@ Begin["Private`"];
 Options[FBSetOptions]={
 	"SaveOutput"->True,
 	"Analysis"->False,
-	"Model"->"MSSM",
+	"Model"->"SM",
 	"MSUSY"->1,
 	"ScaleMu"->100,
 	"TanB"->5.,

@@ -10,9 +10,9 @@ Begin["`Private`"];
 
 (* ::Function options:: *)
 
-Options[FBLoadBestFitsAndErrors]={"Model"->"MSSM","MSUSY"->1,"ScaleMu"->100,"NeutrinoOrdering"->"Normal"};
-Options[FBGetDataBestFit]={"Model"->"MSSM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.,"Sector"->"All"};
-Options[FBGetDataErrors]={"Model"->"MSSM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.,"Sector"->"All","ExcludeParameters"->{}};
+Options[FBLoadBestFitsAndErrors]={"Model"->"SM","MSUSY"->1,"ScaleMu"->100,"NeutrinoOrdering"->"Normal"};
+Options[FBGetDataBestFit]={"Model"->"SM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.,"Sector"->"All"};
+Options[FBGetDataErrors]={"Model"->"SM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.,"Sector"->"All","ExcludeParameters"->{}};
 
 (* ::Public functions:: *)
 
