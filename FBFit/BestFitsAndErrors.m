@@ -10,7 +10,7 @@ Begin["`Private`"];
 
 (* ::Function options:: *)
 
-Options[FBLoadBestFitsAndErrors]={"Model"->"MSSM","MSUSY"->1,"ScaleMu"->100};
+Options[FBLoadBestFitsAndErrors]={"Model"->"MSSM","MSUSY"->1,"ScaleMu"->100,"NeutrinoOrdering"->"Normal"};
 Options[FBGetDataBestFit]={"Model"->"MSSM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.,"Sector"->"All"};
 Options[FBGetDataErrors]={"Model"->"MSSM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.,"Sector"->"All","ExcludeParameters"->{}};
 
@@ -21,7 +21,7 @@ FBLoadBestFitsAndErrors[opts:OptionsPattern[]]:=Module[{model},
 	Print["FBLoadBestFitsAndErrors: extracting Yukawa couplings and mixing parameters..."];
 	Switch[model,
 	"MSSM",loadBestFitsAndErrorsMSSM[OptionValue["MSUSY"]],
-	"SM",loadBestFitsAndErrorsSM[OptionValue["ScaleMu"]],
+	"SM",loadBestFitsAndErrorsSM[OptionValue["ScaleMu"],OptionValue["NeutrinoOrdering"]],
 	_,printBadModel[]
 	]
 ];
@@ -70,23 +70,6 @@ loadBestFitsAndErrorsSM[mu_,ordering_]:=Module[{vHiggs=174},
 	
 	{dm21,dm31}={7.40*^-5,2.494*^-3};
 	{errdm21,errdm31}={0.21*^-5,0.033*^-3};*)	
-
-	(* Data from NuFit 4.0 *)
-	Switch[ordering,
-		"normal",
-			{theta12l,theta13l,theta23l,deltal}={33.82,8.61,49.7,217};
-			{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.13,1.1,40};
-
-			{dm21,dm31}={7.39*^-5,2.525*^-3};
-			{errdm21,errdm31}={0.21*^-5,0.033*^-3};
-		,
-		"inverted",
-			{theta12l,theta13l,theta23l,deltal}={33.82,8.65,49.7,280};
-			{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.13,1.0,28};
-							
-			{dm21,dm31}={7.39*^-5,-2.512*^-3};
-			{errdm21,errdm31}={0.21*^-5,0.034*^-3};
-	];
 	
 	If[mu=="MZ",
 		{theta12q,theta13q,theta23q,deltaq}={0.22735,3.64*^-3,4.208*^-2,1.208}/Degree;(* Cabibbo angle and CP phase *)
@@ -101,6 +84,24 @@ loadBestFitsAndErrorsSM[mu_,ordering_]:=Module[{vHiggs=174},
 		{ye,ymu,ytau}={4.90856087*^-4,0.103622931,1.76167}/vHiggs;
 		{errye,errymu,errytau}=0.006{ye,ymu,ytau};
 	];
+	
+	(* Data from NuFit 4.0 *)
+	Switch[ordering,
+		"Normal",
+			{theta12l,theta13l,theta23l,deltal}={33.82,8.61,49.7,217};
+			{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.13,1.1,40};
+
+			{dm21,dm31}={7.39*^-5,2.525*^-3};
+			{errdm21,errdm31}={0.21*^-5,0.033*^-3};
+		,
+		"Inverted",
+			{theta12l,theta13l,theta23l,deltal}={33.82,8.65,49.7,280};
+			{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.13,1.0,28};
+							
+			{dm21,dm31}={7.39*^-5,-2.512*^-3};
+			{errdm21,errdm31}={0.21*^-5,0.034*^-3};
+	];
+	
 	Return[0];
 ];
 
