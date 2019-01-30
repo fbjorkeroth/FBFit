@@ -20,7 +20,7 @@ FBLoadBestFitsAndErrors[opts:OptionsPattern[]]:=Module[{model},
 	model=OptionValue["Model"];
 	Print["FBLoadBestFitsAndErrors: extracting Yukawa couplings and mixing parameters..."];
 	Switch[model,
-	"MSSM",loadBestFitsAndErrorsMSSM[OptionValue["MSUSY"]],
+	"MSSM",loadBestFitsAndErrorsMSSM[OptionValue["MSUSY"],OptionValue["NeutrinoOrdering"]],
 	"SM",loadBestFitsAndErrorsSM[OptionValue["ScaleMu"],OptionValue["NeutrinoOrdering"]],
 	_,printBadModel[]
 	]
@@ -105,7 +105,7 @@ loadBestFitsAndErrorsSM[mu_,ordering_]:=Module[{vHiggs=174},
 	Return[0];
 ];
 
-loadBestFitsAndErrorsMSSM[MSUSY_:1]:=Module[{data(*,vHiggs=174*)},
+loadBestFitsAndErrorsMSSM[MSUSY_,ordering_]:=Module[{data(*,vHiggs=174*)},
 	SetOptions[Interpolation,InterpolationOrder->1];
 
 	data=importDataFile[#,MSUSY]&/@{
@@ -144,7 +144,7 @@ loadBestFitsAndErrorsMSSM[MSUSY_:1]:=Module[{data(*,vHiggs=174*)},
 	erryb=Function[{tanBeta,etaB},sigmayb[tanBeta,etaB]yb[tanBeta,etaB]];
 	errytau=Function[{tanBeta,etaB},sigmaytau[tanBeta,etaB]ytau[tanBeta,etaB]];
 	
-	{theta12q,deltaq}={13.026,69.215};
+	(*{theta12q,deltaq}={13.026,69.215};
 	{theta12l,theta13l,theta23l}={33.57,8.46,41.75};
 	{dm21,dm31}={7.51*^-5,2.524*^-3};
 	deltal=257;
@@ -152,7 +152,24 @@ loadBestFitsAndErrorsMSSM[MSUSY_:1]:=Module[{data(*,vHiggs=174*)},
 	{errtheta12q,errdeltaq}={0.041,3.095};
 	{errtheta12l,errtheta13l,errtheta23l}={0.76,0.15,1.35};
 	{errdm21,errdm31}={0.18*^-5,0.040*^-3};
-	errdeltal=55;
+	errdeltal=55;*)
+	
+	(* Data from NuFit 4.0 *)
+	Switch[ordering,
+		"Normal",
+			{theta12l,theta13l,theta23l,deltal}={33.82,8.61,49.7,217};
+			{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.13,1.1,40};
+
+			{dm21,dm31}={7.39*^-5,2.525*^-3};
+			{errdm21,errdm31}={0.21*^-5,0.033*^-3};
+		,
+		"Inverted",
+			{theta12l,theta13l,theta23l,deltal}={33.82,8.65,49.7,280};
+			{errtheta12l,errtheta13l,errtheta23l,errdeltal}={0.78,0.13,1.0,28};
+							
+			{dm21,dm31}={7.39*^-5,-2.512*^-3};
+			{errdm21,errdm31}={0.21*^-5,0.034*^-3};
+	];
 ];
 
 thisPath=DirectoryName[$InputFileName];
