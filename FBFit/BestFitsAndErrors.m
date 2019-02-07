@@ -102,10 +102,12 @@ loadBestFitsAndErrorsSM[mu_,ordering_,univerror_]:=Module[{vHiggs=174},
 			{errdm21,errdm31}={0.21*^-5,0.034*^-3};
 	];
 	
-	If[univerror!=Null,
+	
+	If[NumericQ[univerror],
+		Print[univerror];
 		{errtheta12q,errtheta13q,errtheta23q,errdeltaq}=univerror{theta12q,theta13q,theta23q,deltaq};
 		{erryu,erryc,erryt,erryd,errys,erryb}=univerror{yu,yc,yt,yd,ys,yb};
-		{errye,errymu,errytau,errdm21,errdm31}=univerror{ye,ymu,ytau,dm21,dm31}
+		{errye,errymu,errytau,errdm21,errdm31}=univerror{ye,ymu,ytau,dm21,dm31}		
 	];
 	
 	Return[0];
