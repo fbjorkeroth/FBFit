@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     17986,        465]
-NotebookOptionsPosition[     11254,        323]
-NotebookOutlinePosition[     11940,        348]
-CellTagsIndexPosition[     11861,        343]
+NotebookDataLength[     18298,        471]
+NotebookOptionsPosition[     11564,        329]
+NotebookOutlinePosition[     12250,        354]
+CellTagsIndexPosition[     12171,        349]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -262,27 +262,33 @@ best done using ",
 
 Cell[BoxData[GridBox[{
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "36a54e1f-db18-44a5-af19-903bd98318dc"], "\"\<Model\>\"", "\"\<MSSM\>\"",
+     "259ff5ad-3dba-4978-9d57-b63519aca3ff"], "\"\<Model\>\"", "\"\<MSSM\>\"",
      Cell["Low-scale model for which to extract data.", "TableText",
-     ExpressionUUID->"df39c4ea-fd89-4a7c-a6cb-8d3fb85b610d"]},
+     ExpressionUUID->"0ebf143f-7dd4-4af5-b517-b43779ea5e99"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "c6c1789c-3106-4a9c-8035-3c42afc1c8f8"], "\"\<MSUSY\>\"", "1", Cell[
+     "c057175b-5d12-467c-8ec1-3d66fe7d0144"], "\"\<MSUSY\>\"", "1", Cell[
     "SUSY-breaking scale for MSSM.", "TableText",ExpressionUUID->
-     "ffee7142-7b70-4493-89c0-88eea24f1129"]},
+     "1fe5b5aa-c7f1-4ba4-9554-a610ada6483a"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "12fcf8b5-03e6-4316-8846-902b1d9548a1"], "\"\<ScaleMu\>\"", "100", Cell[
+     "2a4e5081-ee72-42d7-9fa9-98e2573d57f2"], "\"\<ScaleMu\>\"", "100", Cell[
     "For SM, scale (in GeV) at which to evaluate parameters.", "TableText",
-     ExpressionUUID->"7b6df382-2417-402e-95cc-be365f7e9504"]},
+     ExpressionUUID->"e54fd0ff-283d-4c4c-8f68-2ddc2f301b63"]},
    {Cell["      ", "ModInfo",ExpressionUUID->
-     "fc60444e-f6d3-412e-8bc9-1cc193b313d8"], "\"\<NeutrinoOrdering\>\"", 
+     "a6c7487c-c724-43b9-add5-7bef5bf39654"], "\"\<NeutrinoOrdering\>\"", 
     "\"\<Normal\>\"", Cell[
     "Normal or inverted neutrino mass ordering.", "TableText",ExpressionUUID->
-     "9a21c2d6-616a-4048-9c30-00744602e952"]}
+     "8b1177f6-7e36-4049-8fcc-aa9f11986fc5"]},
+   {Cell["      ", "ModInfo",ExpressionUUID->
+     "c048514f-9d40-4da3-abb7-4ed30ec38153"], "\"\<UniversalError\>\"", 
+    "Null", Cell[
+    "Universal error across all observables.", "TableText",ExpressionUUID->
+     "969cba9c-50bf-481f-96e9-d6b97f70ab87"]}
   }]], "3ColumnTableMod",
  CellChangeTimes->{{3.740217678084083*^9, 3.740217682595284*^9}, {
    3.740291783312285*^9, 3.740291794097499*^9}, 3.740291857987679*^9, {
-   3.7574050388185787`*^9, 3.757405069160143*^9}},
- CellID->1174362396,ExpressionUUID->"5348a968-bd51-407f-8bcf-a9432b1ec08c"]
+   3.7574050388185787`*^9, 3.757405069160143*^9}, {3.7585216792952003`*^9, 
+   3.7585217370541*^9}},
+ CellID->1174362396,ExpressionUUID->"99f64bac-5d86-45f9-8a7e-ee0baa54068c"]
 }, Open  ]],
 
 Cell[BoxData[
@@ -342,7 +348,7 @@ CellTagsIndex->{
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"ExtendedExamples", 11668, 336}
+ {"ExtendedExamples", 11978, 342}
  }
 *)
 (*NotebookFileOutline
@@ -453,18 +459,18 @@ Cell[7716, 239, 244, 5, 21, "ExampleSection",ExpressionUUID->"85310565-f4ee-4f56
  CellID->2061341341],
 Cell[7963, 246, 639, 14, 43, "ExampleText",ExpressionUUID->"b63ac7f0-184e-4461-854a-0723228597f7",
  CellID->1103855990],
-Cell[8605, 262, 1341, 22, 95, "3ColumnTableMod",ExpressionUUID->"5348a968-bd51-407f-8bcf-a9432b1ec08c",
+Cell[8605, 262, 1651, 28, 113, "3ColumnTableMod",ExpressionUUID->"99f64bac-5d86-45f9-8a7e-ee0baa54068c",
  CellID->1174362396]
 }, Open  ]],
-Cell[9961, 287, 248, 5, 33, "ExampleSection",ExpressionUUID->"b95098e4-9880-4658-9132-80d2d8a3da13",
+Cell[10271, 293, 248, 5, 33, "ExampleSection",ExpressionUUID->"b95098e4-9880-4658-9132-80d2d8a3da13",
  CellID->258228157],
-Cell[10212, 294, 259, 5, 21, "ExampleSection",ExpressionUUID->"442028af-9563-4706-b6c4-9255906851bc",
+Cell[10522, 300, 259, 5, 21, "ExampleSection",ExpressionUUID->"442028af-9563-4706-b6c4-9255906851bc",
  CellID->2123667759],
-Cell[10474, 301, 252, 5, 21, "ExampleSection",ExpressionUUID->"9a75e3fc-a12a-420e-936e-b6f93662cf0f",
+Cell[10784, 307, 252, 5, 21, "ExampleSection",ExpressionUUID->"9a75e3fc-a12a-420e-936e-b6f93662cf0f",
  CellID->1305812373],
-Cell[10729, 308, 257, 5, 21, "ExampleSection",ExpressionUUID->"5a84b343-a8e6-4e28-9dd7-ccfe19f036bc",
+Cell[11039, 314, 257, 5, 21, "ExampleSection",ExpressionUUID->"5a84b343-a8e6-4e28-9dd7-ccfe19f036bc",
  CellID->1653164318],
-Cell[10989, 315, 249, 5, 21, "ExampleSection",ExpressionUUID->"45576d66-5c2c-45fe-8585-e13e55bda4cb",
+Cell[11299, 321, 249, 5, 21, "ExampleSection",ExpressionUUID->"45576d66-5c2c-45fe-8585-e13e55bda4cb",
  CellID->589267740]
 }, Open  ]]
 }

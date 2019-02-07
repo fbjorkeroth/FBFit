@@ -25,13 +25,14 @@ Options[FBSetOptions]={
 	"ThinningSaveFile"->1,
 	"Sector"->"All",
 	"MinAcceptance"->0,
-	"NeutrinoOrdering"->"Normal"
+	"NeutrinoOrdering"->"Normal",
+	"UniversalError"->Null
 };
 
 (* ::Public functions:: *)
 
-FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf,sec,mac,ord},
-	{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf,sec,mac,ord}=OptionValue[#]&/@{
+FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf,sec,mac,ord,ue},
+	{save,an,m,ms,scmu,tb,eb,bu,va,ep,ssf,ss,sigma,tsf,sec,mac,ord,ue}=OptionValue[#]&/@{
 		"SaveOutput",
 		"Analysis",
 		"Model",
@@ -48,7 +49,8 @@ FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ss
 		"ThinningSaveFile",
 		"Sector",
 		"MinAcceptance",
-		"NeutrinoOrdering"
+		"NeutrinoOrdering",
+		"UniversalError"
 		};
 		
 	SetOptions[FBFit`FBSetSeed,{"SeedSignFlip"->ssf,"SeedSmear"->ss}];
@@ -57,7 +59,7 @@ FBSetOptions[opts:OptionsPattern[]]:=Module[{save,an,m,ms,scmu,tb,eb,bu,va,ep,ss
 
 	SetOptions[FBFit`CalculateParameters`FBGetPhysicalParameters,{"Sector"->sec}];
 
-	SetOptions[FBFit`BestFitsAndErrors`FBLoadBestFitsAndErrors,{"Model"->m,"MSUSY"->ms,"ScaleMu"->scmu,"NeutrinoOrdering"->ord}];
+	SetOptions[FBFit`BestFitsAndErrors`FBLoadBestFitsAndErrors,{"Model"->m,"MSUSY"->ms,"ScaleMu"->scmu,"NeutrinoOrdering"->ord,"UniversalError"->ue}];
 	SetOptions[FBFit`BestFitsAndErrors`FBGetDataBestFit,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb,"Sector"->sec}];
 	SetOptions[FBFit`BestFitsAndErrors`FBGetDataErrors,{"Model"->m,"ScaleMu"->scmu,"TanB"->tb,"EtaB"->eb,
 		"Sector"->sec,"ExcludeParameters"->ep}];
