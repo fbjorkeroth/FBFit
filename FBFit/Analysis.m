@@ -16,6 +16,7 @@ FBCredibleInterval::usage="Calculates the N% credible interval for physical (Yuk
 FBPlotHistogram::usage="Plots histogram of physical output data.";
 
 FBChopDataFraction::usage="Chops off the first Nth fraction of rows in a data set, where 0<N<1.";
+FBSVD::usage="Singular value decomposition of a matrix M, with ordered eigenvalues."
 
 Begin["Private`"];
 
@@ -131,6 +132,16 @@ FBChopDataFraction[inputdata_,bottomfraction_]:=Module[{n},
 	n=Round[(1-bottomfraction)Length[inputdata]];
 	Take[inputdata,-n]
 ];
+
+FBSVD[m_] := Module[{u, sigma, v, ord},
+   	{u, sigma, v} = SingularValueDecomposition[m];
+   	ord = Ordering[Diagonal[sigma]];
+   	{u, v} = 
+    Map[ConjugateTranspose[Chop[#]] &, 
+     Transpose[Transpose[#][[ord]]] & /@ {u, v}];
+   	sigma = sigma[[ord, ord]];
+   	{u, sigma, v}
+   ];
 
 
 (* ::Internal functions:: *)
