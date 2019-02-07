@@ -10,7 +10,7 @@ Begin["`Private`"];
 
 (* ::Function options:: *)
 
-Options[FBLoadBestFitsAndErrors]={"Model"->"SM","MSUSY"->1,"ScaleMu"->100,"NeutrinoOrdering"->"Normal"};
+Options[FBLoadBestFitsAndErrors]={"Model"->"SM","MSUSY"->1,"ScaleMu"->100,"NeutrinoOrdering"->"Normal","UniversalError"->Null};
 Options[FBGetDataBestFit]={"Model"->"SM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.,"Sector"->"All"};
 Options[FBGetDataErrors]={"Model"->"SM","ScaleMu"->100,"TanB"->5.,"EtaB"->0.,"Sector"->"All","ExcludeParameters"->{}};
 
@@ -21,7 +21,7 @@ FBLoadBestFitsAndErrors[opts:OptionsPattern[]]:=Module[{model},
 	Print["FBLoadBestFitsAndErrors: extracting Yukawa couplings and mixing parameters..."];
 	Switch[model,
 	"MSSM",loadBestFitsAndErrorsMSSM[OptionValue["MSUSY"],OptionValue["NeutrinoOrdering"]],
-	"SM",loadBestFitsAndErrorsSM[OptionValue["ScaleMu"],OptionValue["NeutrinoOrdering"]],
+	"SM",loadBestFitsAndErrorsSM[OptionValue["ScaleMu"],OptionValue["NeutrinoOrdering"],OptionValue["UniversalError"]],
 	_,printBadModel[]
 	]
 ];
@@ -51,7 +51,7 @@ FBGetDataErrors[OptionsPattern[]]:=Module[{model,sec,err},
 
 printBadModel[]:=Module[{},Print["Model not supported. Quitting kernel for safety.."];Quit[]];
 
-loadBestFitsAndErrorsSM[mu_,ordering_]:=Module[{vHiggs=174},
+loadBestFitsAndErrorsSM[mu_,ordering_,univerror_]:=Module[{vHiggs=174},
 	{theta12q,theta13q,theta23q,deltaq}={13.026,3.8*^-3/Degree,4.4*^-2/Degree,69.215};(* Cabibbo angle and CP phase *)
 	{errtheta12q,errtheta13q,errtheta23q,errdeltaq}={0.041,0.036 theta13q,0.016 theta23q,3.095};
 
@@ -100,6 +100,12 @@ loadBestFitsAndErrorsSM[mu_,ordering_]:=Module[{vHiggs=174},
 							
 			{dm21,dm31}={7.39*^-5,-2.512*^-3};
 			{errdm21,errdm31}={0.21*^-5,0.034*^-3};
+	];
+	
+	If[univerror!=Null,
+		{errtheta12q,errtheta13q,errtheta23q,errdeltaq}=univerror{theta12q,theta13q,theta23q,deltaq};
+		{erryu,erryc,erryt,erryd,errys,erryb}=univerror{yu,yc,yt,yd,ys,yb};
+		{errye,errymu,errytau,errdm21,errdm31}=univerror{ye,ymu,ytau,dm21,dm31}
 	];
 	
 	Return[0];
