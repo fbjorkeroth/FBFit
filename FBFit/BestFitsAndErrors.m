@@ -103,7 +103,6 @@ loadBestFitsAndErrorsSM[mu_,ordering_,univerror_]:=Module[{vHiggs=174},
 	];
 	
 	If[NumericQ[univerror],
-		Print[univerror];
 		{errtheta12q,errtheta13q,errtheta23q,errdeltaq}=univerror{theta12q,theta13q,theta23q,deltaq};
 		{erryu,erryc,erryt,erryd,errys,erryb}=univerror{yu,yc,yt,yd,ys,yb};
 		{errye,errymu,errytau,errdm21,errdm31}=univerror{ye,ymu,ytau,dm21,dm31}		
@@ -112,7 +111,7 @@ loadBestFitsAndErrorsSM[mu_,ordering_,univerror_]:=Module[{vHiggs=174},
 	Return[0];
 ];
 
-loadBestFitsAndErrorsMSSM[MSUSY_,ordering_,univerror_]:=Module[{data(*,vHiggs=174*)},
+loadBestFitsAndErrorsMSSM[MSUSY_,ordering_,univerror_]:=Module[{data(*,vHiggs=174*),u},
 	SetOptions[Interpolation,InterpolationOrder->1];
 
 	data=importDataFile[#,MSUSY]&/@{
@@ -122,7 +121,10 @@ loadBestFitsAndErrorsMSSM[MSUSY_,ordering_,univerror_]:=Module[{data(*,vHiggs=17
 		"reduced_yt","reduced_yb","reduced_ytau",
 		"sigma_yb","sigma_yt","sigma_ytau"
 	};
+	
+	u[x_]:=If[NumericQ[univerror],univerror,x];
 
+	{theta12q,deltaq}={13.026,69.215};
 	theta13q=Function[{tanBeta,etaB},10^-3. (1+etaB)Quiet@Interpolation[data[[1]]][tanBeta,etaB]/Degree];
 	theta23q=Function[{tanBeta,etaB},10^-2. (1+etaB)Quiet@Interpolation[data[[2]]][tanBeta,etaB]/Degree];
 	yu=Function[{tanBeta,etaB},10^-6 Csc[ArcTan[tanBeta]]Quiet@Interpolation[data[[3]]][tanBeta,etaB]];
@@ -139,19 +141,20 @@ loadBestFitsAndErrorsMSSM[MSUSY_,ordering_,univerror_]:=Module[{data(*,vHiggs=17
 	sigmayb=Function[{tanBeta,etaB},Quiet@Interpolation[data[[13]]][tanBeta,etaB]];
 	sigmaytau=Function[{tanBeta,etaB},Quiet@Interpolation[data[[14]]][tanBeta,etaB]];
 	
-	errtheta13q=Function[{tanBeta,etaB},0.036theta13q[tanBeta,etaB]];
-	errtheta23q=Function[{tanBeta,etaB},0.016theta23q[tanBeta,etaB]];
-	erryu=Function[{tanBeta,etaB},0.31yu[tanBeta,etaB]];
-	erryd=Function[{tanBeta,etaB},0.11yd[tanBeta,etaB]];
-	errye=Function[{tanBeta,etaB},0.006ye[tanBeta,etaB]];
-	erryc=Function[{tanBeta,etaB},0.035yc[tanBeta,etaB]];
-	errys=Function[{tanBeta,etaB},0.054ys[tanBeta,etaB]];
-	errymu=Function[{tanBeta,etaB},0.006ymu[tanBeta,etaB]];
-	erryt=Function[{tanBeta,etaB},sigmayt[tanBeta,etaB]yt[tanBeta,etaB]];
-	erryb=Function[{tanBeta,etaB},sigmayb[tanBeta,etaB]yb[tanBeta,etaB]];
-	errytau=Function[{tanBeta,etaB},sigmaytau[tanBeta,etaB]ytau[tanBeta,etaB]];
+	{errtheta12q,errdeltaq}={0.041,3.095};
+	errtheta13q=Function[{tanBeta,etaB},u[0.036]theta13q[tanBeta,etaB]];
+	errtheta23q=Function[{tanBeta,etaB},u[0.016]theta23q[tanBeta,etaB]];
+	erryu=Function[{tanBeta,etaB},u[0.31]yu[tanBeta,etaB]];
+	erryd=Function[{tanBeta,etaB},u[0.11]yd[tanBeta,etaB]];
+	errye=Function[{tanBeta,etaB},u[0.006]ye[tanBeta,etaB]];
+	erryc=Function[{tanBeta,etaB},u[0.035]yc[tanBeta,etaB]];
+	errys=Function[{tanBeta,etaB},u[0.054]ys[tanBeta,etaB]];
+	errymu=Function[{tanBeta,etaB},u[0.006]ymu[tanBeta,etaB]];
+	erryt=Function[{tanBeta,etaB},u[sigmayt[tanBeta,etaB]]yt[tanBeta,etaB]];
+	erryb=Function[{tanBeta,etaB},u[sigmayb[tanBeta,etaB]]yb[tanBeta,etaB]];
+	errytau=Function[{tanBeta,etaB},u[sigmaytau[tanBeta,etaB]]ytau[tanBeta,etaB]];
 	
-	(*{theta12q,deltaq}={13.026,69.215};
+	(*
 	{theta12l,theta13l,theta23l}={33.57,8.46,41.75};
 	{dm21,dm31}={7.51*^-5,2.524*^-3};
 	deltal=257;
@@ -179,11 +182,11 @@ loadBestFitsAndErrorsMSSM[MSUSY_,ordering_,univerror_]:=Module[{data(*,vHiggs=17
 	];
 	
 	If[NumericQ[univerror],
-		Print[univerror];
-		{errtheta12q,errtheta13q,errtheta23q,errdeltaq}=univerror{theta12q,theta13q,theta23q,deltaq};
-		{erryu,erryc,erryt,erryd,errys,erryb}=univerror{yu,yc,yt,yd,ys,yb};
-		{errye,errymu,errytau,errdm21,errdm31}=univerror{ye,ymu,ytau,dm21,dm31}		
+		{errtheta12q,errdeltaq}=univerror{theta12q,deltaq};
+		{errdm21,errdm31}=univerror{dm21,dm31}
 	];
+	
+	Return[0];
 ];
 
 thisPath=DirectoryName[$InputFileName];
